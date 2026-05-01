@@ -1,0 +1,3 @@
+import React,{useState}from'react'
+export default function Architectural(){const[d]=useState(true);const b=d?'#111827':'#f9fafb';const c=d?'#1f2937':'white';const t=d?'#f9fafb':'#111827';const s=d?'#9ca3af':'#6b7280'
+return<div style={{background:b,minHeight:'100vh'}}><h1 style={{color:t,fontSize:24,marginBottom:4}}>🏛️ Architectural Coordination</h1><p style={{color:s,fontSize:13,marginBottom:20}}>Design Phase</p><div style={{background:c,borderRadius:14,padding:24}}><p style={{color:t}}>📋 Module content coming soon.</p></div></div>}
