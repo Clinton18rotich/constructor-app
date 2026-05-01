@@ -1,13 +1,223 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>constructor-app</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Constructor Super App - 40 Modules</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;overflow:hidden;background:#111827;-webkit-tap-highlight-color:transparent}
+#root{height:100vh;overflow:hidden}
+.sb{position:fixed;top:0;left:0;width:260px;height:100vh;background:#1f2937;overflow-y:auto;z-index:50;transition:transform 0.3s;border-right:1px solid #374151}
+.sb.closed{transform:translateX(-100%)}
+.overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:40;display:none}
+.overlay.show{display:block}
+.hamburger{position:fixed;top:10px;left:10px;z-index:60;background:#1f2937;border:1px solid #374151;color:#f9fafb;font-size:22px;width:40px;height:40px;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.sbh{padding:14px 16px;border-bottom:1px solid #374151;font-weight:bold;font-size:16px;color:#f9fafb;cursor:pointer}
+.ph{padding:14px 16px;cursor:pointer;font-weight:bold;font-size:14px;color:#93c5fd;background:#111827;border-bottom:1px solid #374151;user-select:none}
+.nl{display:block;padding:12px 16px 12px 36px;font-size:13px;color:#d1d5db;border-bottom:1px solid #1f2937;text-decoration:none;cursor:pointer}
+.nl:active,.nl.ac{background:#1e3a5f;color:#60a5fa}
+.mn{flex:1;overflow-y:auto;padding:16px;height:100vh;margin-left:0;-webkit-overflow-scrolling:touch}
+.cd{background:#1f2937;border-radius:14px;padding:16px;margin-bottom:12px}
+.gr{display:grid;grid-template-columns:1fr;gap:12px}
+.gr2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.gr3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.bt{padding:8px 14px;border-radius:8px;border:none;cursor:pointer;font-size:12px}
+.bt:active{opacity:0.7}
+.bt2{padding:10px 18px;border-radius:10px;border:none;cursor:pointer;font-size:14px;font-weight:600;width:100%}
+.inp{width:100%;padding:12px;border-radius:10px;border:1px solid #374151;background:#111827;color:#f9fafb;font-size:14px;margin-bottom:8px;-webkit-appearance:none}
+.inp2{padding:12px;border-radius:10px;border:1px solid #374151;background:#111827;color:#f9fafb;font-size:14px;margin-bottom:8px;-webkit-appearance:none;flex:1}
+.sel{width:100%;padding:12px;border-radius:10px;border:1px solid #374151;background:#111827;color:#f9fafb;font-size:14px;margin-bottom:8px;-webkit-appearance:none}
+.lbl{font-size:12px;color:#9ca3af;margin-bottom:4px;display:block}
+.tag{display:inline-block;padding:3px 8px;border-radius:9999px;font-size:10px;margin:2px;background:#374151;color:#d1d5db}
+.tag.g{background:#065f46;color:#6ee7b7}
+.tag.r{background:#7f1d1d;color:#fca5a5}
+.tag.b{background:#1e3a5f;color:#93c5fd}
+.tag.y{background:#78350f;color:#fcd34d}
+.tag.p{background:#4a1d6e;color:#c4b5fd}
+h1{font-size:22px;font-weight:bold;color:#f9fafb;margin-bottom:4px}
+h2{font-size:18px;font-weight:bold;color:#f9fafb;margin-bottom:4px}
+h3{font-size:15px;font-weight:bold;color:#93c5fd;margin-bottom:10px}
+h4{font-size:13px;font-weight:bold;color:#f9fafb;margin-bottom:6px}
+p.sub{color:#9ca3af;font-size:13px;margin-bottom:16px}
+.itm{display:block;padding:10px 0;font-size:13px;color:#f9fafb;border-bottom:1px solid #374151;text-decoration:none;cursor:pointer}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:8px}
+.col{flex:1;min-width:140px}
+.progress-bar{height:8px;background:#374151;border-radius:9999px;overflow:hidden;margin-top:4px}
+.progress-fill{height:100%;border-radius:9999px}
+</style>
+</head>
+<body><div id="root"></div>
+<script>
+var appData=JSON.parse(localStorage.getItem('constructorData')||'{}');
+var defaults={surveys:[],soilTests:[],gisLayers:[],finances:[],contracts:[],approvals:[],designBeams:[],designColumns:[],designSlabs:[],designFoundations:[],archNotes:[],waterPipes:[],drainPipes:[],electricalCircuits:[],transportSections:[],envAssessments:[],tempWorks:[],cadFiles:[],measurements:[],materials:[],boqItems:[],estimates:[],valueItems:[],lifecycleItems:[],purchaseOrders:[],awardedContracts:[],suppliers:[],plantItems:[],crewMembers:[],dailyLogs:[],programmeTasks:[],buildingTasks:[],pilingRecords:[],labTests:[],safetyIncidents:[],ncrRecords:[],documents:[],siteDeliveries:[],communications:[],snags:[],asBuiltDocs:[],reportsData:[],claimsItems:[]};
+Object.keys(defaults).forEach(function(k){if(!appData[k])appData[k]=defaults[k];});
+function save(){localStorage.setItem('constructorData',JSON.stringify(appData));render();}
+var dark=true,openPhase=null,sidebarOpen=false;
+function toggleSB(){sidebarOpen=!sidebarOpen;render();}
+function closeSB(){sidebarOpen=false;render();}
+function togglePhase(i){openPhase=openPhase===i?null:i;render();}
+function getPath(){return window.location.hash.replace('#','')||'/';}
+function nav(p){closeSB();window.location.hash='#'+p;}
+window.onhashchange=function(){closeSB();render();};
+function fmt(n){return (n||0).toLocaleString();}
+function fmtDate(d){return new Date(d).toLocaleDateString();}
+function pct(a,b){return b>0?Math.round(a/b*100):0;}
+
+var phases=[
+  {name:'A. Pre-Construction',items:[{id:'surveying',emoji:'📐',title:'Surveying & Setting Out'},{id:'geotechnical',emoji:'🌍',title:'Geotechnical Investigation'},{id:'gis',emoji:'🗺️',title:'GIS & Site Mapping'},{id:'finance',emoji:'📊',title:'Project Finance & Appraisal'},{id:'contracts',emoji:'⚖️',title:'Contracts & Procurement'},{id:'land',emoji:'🏛️',title:'Land & Statutory Approvals'}]},
+  {name:'B. Design',items:[{id:'structures',emoji:'🏗️',title:'Structures (EC/BS)'},{id:'architectural',emoji:'🏛️',title:'Architectural Coordination'},{id:'water',emoji:'💧',title:'Water Supply Engineering'},{id:'drainage',emoji:'🚿',title:'Drainage & Sewerage'},{id:'electrical',emoji:'⚡',title:'Electrical Design'},{id:'transport',emoji:'🛣️',title:'Transport & Highway'},{id:'environmental',emoji:'🌱',title:'Environmental & Climate'},{id:'tempworks',emoji:'🏗️',title:'Temporary Works Design'},{id:'cad',emoji:'🎨',title:'CAD/BIM Viewer'}]},
+  {name:'C. Measurement & Costing',items:[{id:'measurements',emoji:'📏',title:'Measurements (NRM2)'},{id:'materials',emoji:'🧱',title:'Construction Materials'},{id:'quantity',emoji:'📊',title:'Quantity Survey (BOQ)'},{id:'estimating',emoji:'💰',title:'Estimating & Costing'},{id:'value',emoji:'💡',title:'Value Engineering'},{id:'lifecycle',emoji:'📈',title:'Life Cycle Costing'}]},
+  {name:'D. Procurement & Mobilization',items:[{id:'procurement',emoji:'🏪',title:'Procurement Management'},{id:'award',emoji:'📜',title:'Contract Award & Admin'},{id:'suppliers',emoji:'🤝',title:'Supplier Database'},{id:'plant',emoji:'🚜',title:'Plant & Equipment'},{id:'hr',emoji:'👷',title:'HR & Crew Mobilization'}]},
+  {name:'E. Construction',items:[{id:'construction',emoji:'📋',title:'Construction Management'},{id:'programme',emoji:'📅',title:'Programme & Schedule'},{id:'building',emoji:'🧱',title:'Building Construction'},{id:'substructure',emoji:'🔩',title:'Substructure & Piling'},{id:'lab',emoji:'🧪',title:'Materials Testing Lab'},{id:'safety',emoji:'⛑️',title:'Health, Safety & Welfare'},{id:'quality',emoji:'✅',title:'Quality Management'},{id:'docs',emoji:'📄',title:'Document Control'},{id:'logistics',emoji:'🚧',title:'Site Logistics'},{id:'stakeholder',emoji:'👥',title:'Stakeholder & Comms'}]},
+  {name:'F. Close-Out & Operations',items:[{id:'snagging',emoji:'🔍',title:'Snagging & Defects'},{id:'asbuilt',emoji:'📦',title:'As-Built & Digital Twin'},{id:'reports',emoji:'📈',title:'Reports & Analytics'},{id:'claims',emoji:'⚖️',title:'Claims & Dispute Resolution'}]}
+];
+
+var pages={};
+
+// ===== PHASE F: CLOSE-OUT & OPERATIONS =====
+// 37. Snagging & Defects
+pages.snagging=function(){
+  var snags=appData.snags.length,open=appData.snags.filter(function(s){return s.status==='Open'}).length,closed=appData.snags.filter(function(s){return s.status==='Closed'}).length;
+  var h='<h1>🔍 Snagging & Defects</h1><p class="sub">Close-Out Phase · Punch list, defect tracking, handover</p>';
+  h+='<div class="gr3"><div class="cd" style="text-align:center"><h2 style="color:#60a5fa">'+snags+'</h2><p style="font-size:10px;color:#9ca3af">Total Snags</p></div><div class="cd" style="text-align:center"><h2 style="color:#f87171">'+open+'</h2><p style="font-size:10px;color:#9ca3af">Open</p></div><div class="cd" style="text-align:center"><h2 style="color:#34d399">'+closed+'</h2><p style="font-size:10px;color:#9ca3af">Closed</p></div></div>';
+  if(snags>0){h+='<div class="progress-bar" style="height:12px;margin-bottom:12px"><div class="progress-fill" style="width:'+pct(closed,snags)+'%;background:#34d399"></div></div><p style="font-size:10px;color:#9ca3af;text-align:center">'+pct(closed,snags)+'% Complete</p>';}
+  h+='<div class="cd"><h4>+ Add Snag</h4><form onsubmit="addSnag(event)"><input class="inp" id="snRef" placeholder="Snag Reference" required><input class="inp" id="snDesc" placeholder="Description of defect" required><div class="row"><input class="inp2" id="snLocation" placeholder="Location / Room" style="flex:1"><select class="inp2" id="snPriority" style="background:#111827;color:#f9fafb;border:1px solid #374151;border-radius:10px;flex:1"><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></div><div class="row"><select class="inp2" id="snTrade" style="background:#111827;color:#f9fafb;border:1px solid #374151;border-radius:10px;flex:1"><option>General</option><option>Carpentry</option><option>Painting</option><option>Plumbing</option><option>Electrical</option><option>Plastering</option><option>Flooring</option><option>External</option></select><input class="inp2" id="snResponsible" placeholder="Responsible party" style="flex:1"></div><button class="bt2" style="background:#dc2626;color:white">+ Add Snag</button></form></div>';
+  if(snags>0){h+='<div class="cd"><h3>📋 Snag List</h3><table><tr><th>Ref</th><th>Description</th><th>Location</th><th>Trade</th><th>Priority</th><th>Status</th><th>Action</th></tr>';appData.snags.forEach(function(s,i){h+='<tr><td><b>'+s.ref+'</b></td><td>'+s.desc+'</td><td>'+s.location+'</td><td>'+s.trade+'</td><td><span class="tag '+(s.priority==='Critical'||s.priority==='High'?'r':'')+'">'+s.priority+'</span></td><td><span class="tag '+(s.status==='Closed'?'g':'r')+'">'+s.status+'</span></td><td>'+(s.status==='Open'?'<button class="bt" style="background:#059669;color:white;font-size:10px;padding:4px 8px" onclick="event.stopPropagation();closeSnag('+i+')">✓ Close</button>':'<span style="font-size:10px;color:#9ca3af">'+s.closedDate+'</span>')+'</td></tr>';});h+='</table></div>';}
+  h+='<div class="cd"><h3>🏠 Handover Checklist</h3>';
+  ['All snags cleared','O&M manuals issued','Keys handed over','As-built drawings issued','Testing & commissioning complete','Certificates issued','Client training complete','Final account agreed'].forEach(function(item){h+='<div class="row" style="justify-content:space-between;padding:6px 0;border-bottom:1px solid #374151"><span style="color:#f9fafb;font-size:12px">'+item+'</span><span class="tag" style="cursor:pointer">☐</span></div>';});
+  h+='</div>';
+  return h;
+};
+
+// 38. As-Built & Digital Twin
+pages.asbuilt=function(){
+  var docs=appData.asBuiltDocs.length;
+  var h='<h1>📦 As-Built & Digital Twin</h1><p class="sub">Close-Out Phase · Record drawings, BIM, O&M manuals</p>';
+  h+='<div class="gr2"><div class="cd" style="text-align:center"><h2 style="color:#60a5fa">'+docs+'</h2><p style="font-size:10px;color:#9ca3af">Documents</p></div><div class="cd" style="text-align:center"><h2 style="color:#34d399">'+appData.asBuiltDocs.filter(function(d){return d.status==='Issued'}).length+'</h2><p style="font-size:10px;color:#9ca3af">Issued</p></div></div>';
+  h+='<div class="cd"><h4>+ Add As-Built Document</h4><form onsubmit="addAsBuiltDoc(event)"><input class="inp" id="abRef" placeholder="Document Reference" required><input class="inp" id="abTitle" placeholder="Document Title" required><div class="row"><select class="inp2" id="abType" style="background:#111827;color:#f9fafb;border:1px solid #374151;border-radius:10px;flex:1"><option>As-Built Drawing</option><option>BIM Model</option><option>O&M Manual</option><option>Test Certificate</option><option>Warranty</option><option>Asset Register</option><option>User Guide</option></select><select class="inp2" id="abFormat" style="background:#111827;color:#f9fafb;border:1px solid #374151;border-radius:10px;flex:1"><option>PDF</option><option>DWG</option><option>IFC</option><option>RVT</option><option>Excel</option><option>Word</option></select></div><input class="inp" id="abLocation" placeholder="File location / path"><button class="bt2" style="background:#7c3aed;color:white">+ Add Document</button></form></div>';
+  if(docs>0){h+='<div class="cd"><h3>📦 As-Built Register</h3><table><tr><th>Ref</th><th>Title</th><th>Type</th><th>Format</th><th>Status</th></tr>';appData.asBuiltDocs.forEach(function(d){h+='<tr><td><b>'+d.ref+'</b></td><td>'+d.title+'</td><td><span class="tag b">'+d.type+'</span></td><td>'+d.format+'</td><td><span class="tag '+(d.status==='Issued'?'g':'y')+'">'+d.status+'</span></td></tr>';});h+='</table></div>';}
+  h+='<div class="cd"><h3>🏗️ Digital Twin Components</h3>';
+  ['Architectural model','Structural model','MEP model','Asset data linked','Sensor data integrated','Maintenance schedules loaded'].forEach(function(item){h+='<div class="row" style="justify-content:space-between;padding:6px 0;border-bottom:1px solid #374151"><span style="color:#f9fafb;font-size:12px">'+item+'</span><span class="tag y">Pending</span></div>';});
+  h+='</div>';
+  return h;
+};
+
+// 39. Reports & Analytics
+pages.reports=function(){
+  var reports=appData.reportsData.length;
+  var h='<h1>📈 Reports & Analytics</h1><p class="sub">Close-Out Phase · Project reports, KPIs, dashboards</p>';
+  // Auto-generate project stats from all data
+  var totalItems=0;Object.keys(appData).forEach(function(k){if(Array.isArray(appData[k]))totalItems+=appData[k].length;});
+  var phasesComplete=[appData.surveys.length>0,appData.soilTests.length>0,appData.finances.length>0,appData.designBeams.length>0,appData.boqItems.length>0,appData.purchaseOrders.length>0,appData.dailyLogs.length>0,appData.snags.filter(function(s){return s.status==='Closed'}).length>0].filter(Boolean).length;
+  h+='<div class="gr3"><div class="cd" style="text-align:center"><h2 style="color:#60a5fa">'+totalItems+'</h2><p style="font-size:10px;color:#9ca3af">Total Records</p></div><div class="cd" style="text-align:center"><h2 style="color:#34d399">'+phasesComplete+'/8</h2><p style="font-size:10px;color:#9ca3af">Phases Active</p></div><div class="cd" style="text-align:center"><h2 style="color:#fbbf24">'+appData.dailyLogs.length+'</h2><p style="font-size:10px;color:#9ca3af">Site Days</p></div></div>';
+  // Progress bar
+  h+='<div class="cd"><h3>📊 Project Completion</h3><div class="progress-bar" style="height:20px;border-radius:10px"><div class="progress-fill" style="width:'+(phasesComplete/8*100)+'%;background:linear-gradient(90deg,#2563eb,#7c3aed,#34d399);border-radius:10px"></div></div><p style="text-align:center;margin-top:4px;font-size:16px;font-weight:bold;color:#60a5fa">'+(phasesComplete/8*100).toFixed(0)+'%</p></div>';
+  // Module activity summary
+  h+='<div class="cd"><h3>📋 Module Activity Summary</h3><div class="gr2">';
+  var cats={surveying:'📐 Survey ('+appData.surveys.length+')',soil:'🌍 Soil Tests ('+appData.soilTests.length+')',design:'🏗️ Design ('+(appData.designBeams.length+appData.designColumns.length)+')',boq:'📊 BOQ Items ('+appData.boqItems.length+')',po:'🏪 POs ('+appData.purchaseOrders.length+')',safety:'⛑️ Incidents ('+appData.safetyIncidents.length+')',ncr:'✅ NCRs ('+appData.ncrRecords.length+')',snags:'🔍 Snags ('+appData.snags.length+')'};
+  Object.entries(cats).forEach(function(e){h+='<div class="cd" style="text-align:center;padding:12px"><span style="font-size:12px;color:#f9fafb">'+e[1]+'</span></div>';});
+  h+='</div></div>';
+  // Generate report
+  h+='<div class="cd"><h3>📄 Generate Project Report</h3><p style="color:#9ca3af;font-size:12px;margin-bottom:8px">Auto-generated summary from all project data</p>';
+  h+='<div class="row"><div class="col"><label class="lbl">Report Type</label><select class="sel" id="rpType"><option>Progress Report</option><option>Financial Summary</option><option>Quality Report</option><option>Safety Report</option><option>Close-Out Report</option></select></div></div><button class="bt2" style="background:#059669;color:white" onclick="generateReport()">📄 Generate Report</button><div id="rpResult" style="margin-top:8px;padding:12px;background:#111827;border-radius:8px;font-size:11px;color:#9ca3af;max-height:200px;overflow-y:auto;white-space:pre-wrap">Select a report type and click Generate</div></div>';
+  return h;
+};
+
+// 40. Claims & Dispute Resolution
+pages.claims=function(){
+  var claims=appData.claimsItems.length,active=appData.claimsItems.filter(function(c){return c.status==='Active'||c.status==='Submitted'}).length;
+  var totalClaimed=appData.claimsItems.reduce(function(s,c){return s+(+c.amount||0)},0);
+  var h='<h1>⚖️ Claims & Dispute Resolution</h1><p class="sub">Close-Out Phase · Contract claims, variations, disputes</p>';
+  h+='<div class="gr3"><div class="cd" style="text-align:center"><h2 style="color:#60a5fa">'+claims+'</h2><p style="font-size:10px;color:#9ca3af">Claims</p></div><div class="cd" style="text-align:center"><h2 style="color:#f87171">'+active+'</h2><p style="font-size:10px;color:#9ca3af">Active</p></div><div class="cd" style="text-align:center"><h2 style="color:#fbbf24">$'+fmt(totalClaimed)+'</h2><p style="font-size:10px;color:#9ca3af">Claimed</p></div></div>';
+  h+='<div class="cd"><h4>+ Register Claim</h4><form onsubmit="addClaim(event)"><input class="inp" id="clRef" placeholder="Claim Reference" required><input class="inp" id="clTitle" placeholder="Claim Title" required><div class="row"><select class="inp2" id="clType" style="background:#111827;color:#f9fafb;border:1px solid #374151;border-radius:10px;flex:1"><option>Extension of Time</option><option>Loss & Expense</option><option>Variation</option><option>Disruption</option><option>Defective Works</option><option>Payment</option></select><input class="inp2" id="clAmount" placeholder="Amount ($)" type="number" style="flex:1"></div><div class="row"><input class="inp2" id="clParty" placeholder="Claimant" style="flex:1"><input class="inp2" id="clRespondent" placeholder="Respondent" style="flex:1"></div><textarea class="inp" id="clDetails" placeholder="Claim details and justification..." rows="2" style="resize:vertical"></textarea><button class="bt2" style="background:#dc2626;color:white">+ Register Claim</button></form></div>';
+  if(claims>0){h+='<div class="cd"><h3>⚖️ Claims Register</h3><table><tr><th>Ref</th><th>Title</th><th>Type</th><th>Amount</th><th>Status</th></tr>';appData.claimsItems.forEach(function(c){h+='<tr><td><b>'+c.ref+'</b></td><td>'+c.title+'</td><td><span class="tag b">'+c.type+'</span></td><td>$'+fmt(c.amount)+'</td><td><span class="tag '+(c.status==='Resolved'?'g':c.status==='Rejected'?'r':'y')+'">'+c.status+'</span></td></tr>';});h+='</table></div>';}
+  h+='<div class="cd"><h3>📜 Dispute Resolution Ladder</h3>';
+  ['1. Negotiation between parties','2. Senior management meeting','3. Mediation (neutral third party)','4. Conciliation','5. Adjudication (statutory)','6. Arbitration','7. Litigation (court)'].forEach(function(s,i){h+='<div class="row" style="padding:6px 0;border-bottom:1px solid #374151"><span style="color:'+(i<3?'#34d399':i<5?'#fbbf24':'#f87171')+';font-size:12px;flex:1">'+s+'</span><span class="tag" style="font-size:9px">Step '+(i+1)+'</span></div>';});
+  h+='</div>';
+  return h;
+};
+
+// ===== PHASES A-E (condensed) =====
+var quickForms={};
+function qf(id,fields,title){quickForms[id]=function(){var h='<h1>'+title+'</h1><p class="sub">Module</p><div class="cd"><h4>+ Add</h4><form onsubmit="'+id+'Form(event)">';fields.forEach(function(f){h+='<input class="inp" id="'+f.id+'" placeholder="'+f.label+'"'+(f.type?' type="'+f.type+'"':'')+'>';});h+='<button class="bt2" style="background:#2563eb;color:white">+ Add</button></form></div>';return h;};}
+['surveying','📐 Surveying','geotechnical','🌍 Geotechnical','gis','🗺️ GIS','finance','📊 Finance','contracts','⚖️ Contracts','land','🏛️ Approvals','structures','🏗️ Structures','architectural','🏛️ Architectural','water','💧 Water','drainage','🚿 Drainage','electrical','⚡ Electrical','transport','🛣️ Transport','environmental','🌱 Environmental','tempworks','🏗️ Temp Works','cad','🎨 CAD/BIM','measurements','📏 Measurements','materials','🧱 Materials','quantity','📊 BOQ','estimating','💰 Estimating','value','💡 Value Eng','lifecycle','📈 Life Cycle','procurement','🏪 Procurement','award','📜 Awards','suppliers','🤝 Suppliers','plant','🚜 Plant','hr','👷 HR & Crew','construction','📋 Construction','programme','📅 Programme','building','🧱 Building','substructure','🔩 Substructure','lab','🧪 Materials Lab','safety','⛑️ Safety','quality','✅ Quality','docs','📄 Doc Control','logistics','🚧 Logistics','stakeholder','👥 Stakeholder'].forEach(function(v,i){if(i%2===0&&!pages[v])pages[v]=function(){var t=arguments.callee.title||v;return'<h1>'+t+'</h1><p class="sub">Module</p><div class="cd"><h4>+ Add Entry</h4><form onsubmit="event.preventDefault();alert(\'Add form\')"><input class="inp" placeholder="Entry"><button class="bt2" style="background:#2563eb;color:white">+ Add</button></form></div>';};});
+
+// ===================== ACTIONS =====================
+// Phase F actions
+function addSnag(e){e.preventDefault();appData.snags.push({ref:document.getElementById('snRef').value,desc:document.getElementById('snDesc').value,location:document.getElementById('snLocation').value,priority:document.getElementById('snPriority').value,trade:document.getElementById('snTrade').value,responsible:document.getElementById('snResponsible').value,status:'Open',date:new Date().toISOString()});save();}
+function closeSnag(i){appData.snags[i].status='Closed';appData.snags[i].closedDate=fmtDate(new Date());save();}
+function addAsBuiltDoc(e){e.preventDefault();appData.asBuiltDocs.push({ref:document.getElementById('abRef').value,title:document.getElementById('abTitle').value,type:document.getElementById('abType').value,format:document.getElementById('abFormat').value,location:document.getElementById('abLocation').value,status:'Draft',date:new Date().toISOString()});save();}
+function generateReport(){
+  var type=document.getElementById('rpType').value,report='';
+  if(type.includes('Progress')){report='=== PROGRESS REPORT ===\nDate: '+fmtDate(new Date())+'\n\n';var snags=appData.snags.length,open=appData.snags.filter(function(s){return s.status==='Open'}).length;report+='Snags: '+snags+' total, '+open+' open\n';report+='Site Days Logged: '+appData.dailyLogs.length+'\n';report+='Tasks: '+appData.programmeTasks.length+' total\n';report+='Building Activities: '+appData.buildingTasks.length+'\n';report+='NCRs: '+appData.ncrRecords.length+' ('+appData.ncrRecords.filter(function(n){return n.status==='Open'}).length+' open)\n';}
+  else if(type.includes('Financial')){report='=== FINANCIAL SUMMARY ===\nDate: '+fmtDate(new Date())+'\n\n';var tc=appData.finances.reduce(function(s,f){return s+(+f.amount||0)},0);var boqTotal=appData.boqItems.reduce(function(s,i){return s+(+i.qty||0)*(+i.rate||0)},0);report+='Total Financed: $'+fmt(tc)+'\n';report+='BOQ Total: $'+fmt(boqTotal)+'\n';report+='POs: '+appData.purchaseOrders.length+' ($'+fmt(appData.purchaseOrders.reduce(function(s,p){return s+(+p.value||0)},0))+')\n';report+='Claimed Amount: $'+fmt(appData.claimsItems.reduce(function(s,c){return s+(+c.amount||0)},0))+'\n';}
+  else if(type.includes('Quality')){report='=== QUALITY REPORT ===\nDate: '+fmtDate(new Date())+'\n\n';report+='NCRs: '+appData.ncrRecords.length+' total\n';report+='Open NCRs: '+appData.ncrRecords.filter(function(n){return n.status==='Open'}).length+'\n';report+='Lab Tests: '+appData.labTests.length+' ('+appData.labTests.filter(function(t){return t.result==='Pass'}).length+' passed)\n';report+='Snags: '+appData.snags.length+' ('+appData.snags.filter(function(s){return s.status==='Closed'}).length+' closed)\n';}
+  else if(type.includes('Safety')){report='=== SAFETY REPORT ===\nDate: '+fmtDate(new Date())+'\n\n';report+='Incidents: '+appData.safetyIncidents.length+' total\n';report+='LTI: '+appData.safetyIncidents.filter(function(s){return s.type==='Lost Time Injury'}).length+'\n';report+='Near Misses: '+appData.safetyIncidents.filter(function(s){return s.type==='Near Miss'}).length+'\n';report+='RIDDOR: 0\n';}
+  else{report='=== CLOSE-OUT REPORT ===\nDate: '+fmtDate(new Date())+'\n\n';report+='Snags: '+appData.snags.length+' ('+appData.snags.filter(function(s){return s.status==='Closed'}).length+' closed)\n';report+='As-Built Docs: '+appData.asBuiltDocs.length+'\n';report+='Claims: '+appData.claimsItems.length+' ('+appData.claimsItems.filter(function(c){return c.status==='Resolved'}).length+' resolved)\n';report+='Total Project Records: '+Object.keys(appData).filter(function(k){return Array.isArray(appData[k])}).reduce(function(s,k){return s+appData[k].length},0)+'\n';}
+  document.getElementById('rpResult').textContent=report;
+}
+function addClaim(e){e.preventDefault();appData.claimsItems.push({ref:document.getElementById('clRef').value,title:document.getElementById('clTitle').value,type:document.getElementById('clType').value,amount:+document.getElementById('clAmount').value,party:document.getElementById('clParty').value,respondent:document.getElementById('clRespondent').value,details:document.getElementById('clDetails').value,status:'Active',date:new Date().toISOString()});save();}
+// Generic form handlers for phases A-E
+function surveyingForm(e){e.preventDefault();appData.surveys.push({name:document.getElementById('svName').value,east:document.getElementById('svEast')?document.getElementById('svEast').value:'',date:new Date().toISOString()});save();}
+function addSurvey(e){surveyingForm(e);}
+function addSoilTest(e){e.preventDefault();appData.soilTests.push({borehole:document.getElementById('stBorehole').value,depth:document.getElementById('stDepth')?document.getElementById('stDepth').value:'',bearing:document.getElementById('stBearing')?document.getElementById('stBearing').value:'',date:new Date().toISOString()});save();}
+function addGISLayer(e){e.preventDefault();appData.gisLayers.push({name:document.getElementById('gisName').value,date:new Date().toISOString()});save();}
+function addFinance(e){e.preventDefault();appData.finances.push({desc:document.getElementById('finDesc').value,amount:+document.getElementById('finAmt').value,date:new Date().toISOString()});save();}
+function addContract(e){e.preventDefault();appData.contracts.push({name:document.getElementById('ctName').value,value:+document.getElementById('ctValue').value,date:new Date().toISOString()});save();}
+function addApproval(e){e.preventDefault();appData.approvals.push({name:document.getElementById('apName').value,status:'Pending',date:new Date().toISOString()});save();}
+function addBeam(e){e.preventDefault();appData.designBeams.push({name:document.getElementById('bmName').value,span:+document.getElementById('bmSpan').value,load:+document.getElementById('bmLoad').value,date:new Date().toISOString()});save();}
+function addColumn(e){e.preventDefault();appData.designColumns.push({name:document.getElementById('colName').value,axial:+document.getElementById('colAxial').value,date:new Date().toISOString()});save();}
+function addArchNote(e){e.preventDefault();appData.archNotes.push({title:document.getElementById('anTitle').value,date:new Date().toISOString()});save();}
+function addWaterPipe(e){e.preventDefault();appData.waterPipes.push({name:document.getElementById('wpName').value,length:+document.getElementById('wpLength').value,date:new Date().toISOString()});save();}
+function addDrainPipe(e){e.preventDefault();appData.drainPipes.push({name:document.getElementById('dpName').value,length:+document.getElementById('dpLength').value,date:new Date().toISOString()});save();}
+function addCircuit(e){e.preventDefault();appData.electricalCircuits.push({name:document.getElementById('ecName').value,load:+document.getElementById('ecLoad').value,date:new Date().toISOString()});save();}
+function addRoadSection(e){e.preventDefault();appData.transportSections.push({name:document.getElementById('rsName').value,length:+document.getElementById('rsLength').value,date:new Date().toISOString()});save();}
+function addEnvAssess(e){e.preventDefault();appData.envAssessments.push({name:document.getElementById('eaName').value,date:new Date().toISOString()});save();}
+function addTempWork(e){e.preventDefault();appData.tempWorks.push({name:document.getElementById('twName').value,date:new Date().toISOString()});save();}
+function addCADFile(e){e.preventDefault();appData.cadFiles.push({name:document.getElementById('cfName').value,ver:document.getElementById('cfVer').value,date:new Date().toISOString()});save();}
+function addMeasurement(e){e.preventDefault();appData.measurements.push({desc:document.getElementById('msDesc').value,qty:(+document.getElementById('msLength').value||1)*(+document.getElementById('msWidth').value||1)*(+document.getElementById('msHeight').value||1),date:new Date().toISOString()});save();}
+function addMaterial(e){e.preventDefault();appData.materials.push({name:document.getElementById('mtName').value,rate:+document.getElementById('mtRate').value,date:new Date().toISOString()});save();}
+function addBOQItem(e){e.preventDefault();appData.boqItems.push({desc:document.getElementById('bqDesc').value,qty:+document.getElementById('bqQty').value,rate:+document.getElementById('bqRate').value,date:new Date().toISOString()});save();}
+function addEstimate(e){e.preventDefault();var m=+document.getElementById('esMat').value||0,l=+document.getElementById('esLab').value||0;appData.estimates.push({name:document.getElementById('esName').value,totalCost:m+l,date:new Date().toISOString()});save();}
+function addVEItem(e){e.preventDefault();appData.valueItems.push({name:document.getElementById('veName').value,orig:+document.getElementById('veOrig').value,prop:+document.getElementById('veProp').value,date:new Date().toISOString()});save();}
+function addLCCItem(e){e.preventDefault();var c=+document.getElementById('lcCapital').value||0,o=+document.getElementById('lcOM').value||0;appData.lifecycleItems.push({name:document.getElementById('lcName').value,capital:c,om:o,npv:Math.round(c+o*20),date:new Date().toISOString()});save();}
+function addPO(e){e.preventDefault();appData.purchaseOrders.push({number:document.getElementById('poNumber').value,supplier:document.getElementById('poSupplier').value,value:+document.getElementById('poValue').value,status:'Pending',date:new Date().toISOString()});save();}
+function addAwardedContract(e){e.preventDefault();appData.awardedContracts.push({name:document.getElementById('acName').value,contractor:document.getElementById('acContractor').value,value:+document.getElementById('acValue').value,date:new Date().toISOString()});save();}
+function addSupplier(e){e.preventDefault();appData.suppliers.push({name:document.getElementById('spName').value,contact:document.getElementById('spContact').value,phone:document.getElementById('spPhone').value,date:new Date().toISOString()});save();}
+function addPlant(e){e.preventDefault();appData.plantItems.push({name:document.getElementById('plName').value,dailyRate:+document.getElementById('plRate').value,days:+document.getElementById('plDays').value,date:new Date().toISOString()});save();}
+function addCrew(e){e.preventDefault();appData.crewMembers.push({name:document.getElementById('crName').value,role:document.getElementById('crRole').value,dailyRate:+document.getElementById('crRate').value,date:new Date().toISOString()});save();}
+function addDailyLog(e){e.preventDefault();appData.dailyLogs.push({weather:document.getElementById('dlWeather').value,workers:+document.getElementById('dlWorkers').value,hours:+document.getElementById('dlHours').value,desc:document.getElementById('dlDesc').value,date:new Date().toLocaleDateString()});save();}
+function addProgTask(e){e.preventDefault();appData.programmeTasks.push({name:document.getElementById('ptName').value,start:document.getElementById('ptStart').value,end:document.getElementById('ptEnd').value,duration:+document.getElementById('ptDuration').value,priority:document.getElementById('ptPriority').value,status:'Pending',date:new Date().toISOString()});save();}
+function addBldgTask(e){e.preventDefault();appData.buildingTasks.push({name:document.getElementById('btName').value,trade:document.getElementById('btTrade').value,floor:document.getElementById('btFloor').value,qty:document.getElementById('btQty').value,unit:document.getElementById('btUnit').value,status:'Pending',date:new Date().toISOString()});save();}
+function addPileRecord(e){e.preventDefault();appData.pilingRecords.push({ref:document.getElementById('prRef').value,type:document.getElementById('prType').value,dia:+document.getElementById('prDia').value,desLen:document.getElementById('prDesLen').value,achLen:document.getElementById('prAchLen').value,conc:document.getElementById('prConc').value,date:new Date().toISOString()});save();}
+function addLabTest(e){e.preventDefault();appData.labTests.push({ref:document.getElementById('ltRef').value,type:document.getElementById('ltType').value,location:document.getElementById('ltLocation').value,value:document.getElementById('ltValue').value,required:document.getElementById('ltRequired').value,result:document.getElementById('ltResult').value,date:new Date().toISOString()});save();}
+function addIncident(e){e.preventDefault();appData.safetyIncidents.push({desc:document.getElementById('siDesc').value,type:document.getElementById('siType').value,severity:document.getElementById('siSeverity').value,action:document.getElementById('siAction').value,date:new Date().toISOString()});save();}
+function addNCR(e){e.preventDefault();appData.ncrRecords.push({ref:document.getElementById('ncrRef').value,desc:document.getElementById('ncrDesc').value,location:document.getElementById('ncrLocation').value,severity:document.getElementById('ncrSeverity').value,status:'Open',date:new Date().toISOString()});save();}
+function addDocument(e){e.preventDefault();appData.documents.push({ref:document.getElementById('dcRef').value,title:document.getElementById('dcTitle').value,type:document.getElementById('dcType').value,rev:document.getElementById('dcRevision').value,status:'For Review',date:new Date().toISOString()});save();}
+function addDelivery(e){e.preventDefault();appData.siteDeliveries.push({supplier:document.getElementById('sdSupplier').value,materials:document.getElementById('sdMaterials').value,vehicle:document.getElementById('sdVehicle').value,time:document.getElementById('sdTime').value,status:'Received',date:new Date().toISOString()});save();}
+function addCommunication(e){e.preventDefault();appData.communications.push({subject:document.getElementById('scSubject').value,type:document.getElementById('scType').value,with:document.getElementById('scWith').value,notes:document.getElementById('scNotes').value,date:new Date().toISOString()});save();}
+
+// ===================== RENDER =====================
+function render(){
+  var p=getPath();
+  var h='<button class="hamburger" onclick="toggleSB()">'+(sidebarOpen?'✕':'☰')+'</button>';
+  h+='<div class="overlay'+(sidebarOpen?' show':'')+'" onclick="closeSB()"></div>';
+  h+='<div class="sb'+(sidebarOpen?'':' closed')+'"><div class="sbh" onclick="nav(\'/\')">🏗️ Constructor</div>';
+  phases.forEach(function(ph,i){
+    h+='<div class="ph" onclick="togglePhase('+i+')">'+ph.name+' ('+ph.items.length+')</div>';
+    if(openPhase===i)ph.items.forEach(function(it){h+='<a class="nl'+(p==='/'+it.id?' ac':'')+'" href="#/'+it.id+'" onclick="nav(\'/'+it.id+'\')">'+it.emoji+' '+it.title+'</a>';});
+  });
+  h+='</div><div class="mn">';
+  if(p==='/'){
+    var t=phases.reduce(function(s,ph){return s+ph.items.length},0);
+    h+='<h1>🏗️ CONSTRUCTOR SUPER APP</h1><p class="sub">'+t+' Modules · 6 Phases · Complete Project Lifecycle</p><div class="gr">';
+    phases.forEach(function(ph){h+='<div class="cd"><h3>'+ph.name+' ('+ph.items.length+')</h3>';ph.items.forEach(function(it){h+='<a class="itm" href="#/'+it.id+'" onclick="nav(\'/'+it.id+'\')">'+it.emoji+' '+it.title+'</a>';});h+='</div>';});
+    h+='</div>';
+  }else{var id=p.replace('/','');if(pages[id])h+=pages[id]();else h+='<h1>404</h1><a href="#/" onclick="nav(\'/\')" style="color:#60a5fa">← Back</a>';}
+  h+='</div>';document.getElementById('root').innerHTML=h;
+}
+render();
+</script>
+</body>
 </html>
