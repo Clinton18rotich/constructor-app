@@ -1,13 +1,15 @@
+<!-- v2.0 - Enhanced with calculators -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Constructor Super App - 40 Modules</title>
+<title>Constructor Super App Pro</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;overflow:hidden;background:#111827;-webkit-tap-highlight-color:transparent}
 #root{height:100vh;overflow:hidden}
+/* Sidebar */
 .sb{position:fixed;top:0;left:0;width:260px;height:100vh;background:#1f2937;overflow-y:auto;z-index:50;transition:transform 0.3s;border-right:1px solid #374151}
 .sb.closed{transform:translateX(-100%)}
 .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:40;display:none}
@@ -17,24 +19,33 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;o
 .ph{padding:14px 16px;cursor:pointer;font-weight:bold;font-size:14px;color:#93c5fd;background:#111827;border-bottom:1px solid #374151;user-select:none}
 .nl{display:block;padding:12px 16px 12px 36px;font-size:13px;color:#d1d5db;border-bottom:1px solid #1f2937;text-decoration:none;cursor:pointer}
 .nl:active,.nl.ac{background:#1e3a5f;color:#60a5fa}
-.mn{flex:1;overflow-y:auto;padding:16px;height:100vh;margin-left:0;-webkit-overflow-scrolling:touch}
-.cd{background:#1f2937;border-radius:14px;padding:16px;margin-bottom:12px}
+/* Main content */
+.mn{flex:1;overflow-y:auto;padding:16px;height:100vh;-webkit-overflow-scrolling:touch}
+/* Cards */
+.cd{background:#1f2937;overflow-x:auto;max-width:100%;border-radius:14px;padding:16px;margin-bottom:12px}
 .gr{display:grid;grid-template-columns:1fr;gap:12px}
 .gr2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .gr3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+/* Buttons */
 .bt{padding:8px 14px;border-radius:8px;border:none;cursor:pointer;font-size:12px}
 .bt:active{opacity:0.7}
 .bt2{padding:10px 18px;border-radius:10px;border:none;cursor:pointer;font-size:14px;font-weight:600;width:100%}
+.bt2:active{opacity:0.7}
+.bt-icon{padding:6px;border-radius:8px;border:1px solid #374151;background:#111827;color:#f9fafb;cursor:pointer;font-size:16px;min-width:36px}
+/* Inputs */
 .inp{width:100%;padding:12px;border-radius:10px;border:1px solid #374151;background:#111827;color:#f9fafb;font-size:14px;margin-bottom:8px;-webkit-appearance:none}
 .inp2{padding:12px;border-radius:10px;border:1px solid #374151;background:#111827;color:#f9fafb;font-size:14px;margin-bottom:8px;-webkit-appearance:none;flex:1}
 .sel{width:100%;padding:12px;border-radius:10px;border:1px solid #374151;background:#111827;color:#f9fafb;font-size:14px;margin-bottom:8px;-webkit-appearance:none}
+textarea.inp{resize:vertical;font-family:inherit}
 .lbl{font-size:12px;color:#9ca3af;margin-bottom:4px;display:block}
+/* Tags */
 .tag{display:inline-block;padding:3px 8px;border-radius:9999px;font-size:10px;margin:2px;background:#374151;color:#d1d5db}
 .tag.g{background:#065f46;color:#6ee7b7}
 .tag.r{background:#7f1d1d;color:#fca5a5}
 .tag.b{background:#1e3a5f;color:#93c5fd}
 .tag.y{background:#78350f;color:#fcd34d}
 .tag.p{background:#4a1d6e;color:#c4b5fd}
+/* Typography */
 h1{font-size:22px;font-weight:bold;color:#f9fafb;margin-bottom:4px}
 h2{font-size:18px;font-weight:bold;color:#f9fafb;margin-bottom:4px}
 h3{font-size:15px;font-weight:bold;color:#93c5fd;margin-bottom:10px}
@@ -43,16 +54,120 @@ p.sub{color:#9ca3af;font-size:13px;margin-bottom:16px}
 .itm{display:block;padding:10px 0;font-size:13px;color:#f9fafb;border-bottom:1px solid #374151;text-decoration:none;cursor:pointer}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:8px}
 .col{flex:1;min-width:140px}
+/* Progress */
 .progress-bar{height:8px;background:#374151;border-radius:9999px;overflow:hidden;margin-top:4px}
 .progress-fill{height:100%;border-radius:9999px}
+/* Photos */
+.photo-thumb{width:40px;height:40px;min-width:40px;object-fit:cover;border-radius:8px;object-fit:cover;border:2px solid #374151;cursor:pointer;margin:4px}
+.photo-grid{display:flex;flex-wrap:wrap;gap:2px;margin-top:4px;max-width:100%;overflow-x:auto}
+/* Notifications */
+.notif-badge{position:fixed;top:10px;right:10px;z-index:60;background:#dc2626;color:white;border-radius:9999px;padding:4px 10px;font-size:12px;font-weight:bold;cursor:pointer}
+.notif-panel{position:fixed;top:50px;right:10px;z-index:60;background:#1f2937;border:1px solid #374151;border-radius:14px;width:300px;max-height:400px;overflow-y:auto;display:none;padding:8px}
+.notif-panel.show{display:block}
+.notif-item{padding:8px;border-bottom:1px solid #374151;font-size:12px;color:#d1d5db;cursor:pointer}
+.notif-item:hover{background:#374151}
+/* Dashboard roles */
+.role-tabs{display:flex;gap:4px;margin-bottom:12px;overflow-x:auto}
+.role-tab{padding:8px 14px;border-radius:20px;border:1px solid #374151;background:transparent;color:#9ca3af;font-size:11px;cursor:pointer;white-space:nowrap}
+.role-tab.active{background:#2563eb;color:white;border-color:#2563eb}
+/* Offline indicator */
+.offline-bar{position:fixed;top:0;left:0;width:100%;z-index:70;background:#f59e0b;color:#111827;text-align:center;padding:4px;font-size:12px;display:none}
+.offline-bar.show{display:block}
+/* Charts placeholder */
+.chart-box{background:#111827;border-radius:8px;padding:20px;text-align:center;color:#9ca3af;font-size:12px;min-height:100px;display:flex;align-items:center;justify-content:center}
+/* Modal */
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:80;display:flex;align-items:center;justify-content:center}
+.modal-inner{background:#1f2937;border-radius:14px;padding:20px;max-width:90vw;max-height:80vh;overflow-y:auto}
+.btn-row{display:flex;gap:6px;flex-wrap:nowrap}.btn-row .bt2{flex:1;min-width:0;font-size:12px;padding:10px 6px;white-space:nowrap}
 </style>
 </head>
-<body><div id="root"></div>
+<body>
+<div class="offline-bar" id="offlineBar">⚠️ Offline - Changes saved locally, will sync when connected</div>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script>
+// ===================== SERVICE WORKER (Offline) =====================
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+
+// ===================== DATA STORE =====================
 var appData=JSON.parse(localStorage.getItem('constructorData')||'{}');
-var defaults={surveys:[],soilTests:[],gisLayers:[],finances:[],contracts:[],approvals:[],designBeams:[],designColumns:[],designSlabs:[],designFoundations:[],archNotes:[],waterPipes:[],drainPipes:[],electricalCircuits:[],transportSections:[],envAssessments:[],tempWorks:[],cadFiles:[],measurements:[],materials:[],boqItems:[],estimates:[],valueItems:[],lifecycleItems:[],purchaseOrders:[],awardedContracts:[],suppliers:[],plantItems:[],crewMembers:[],dailyLogs:[],programmeTasks:[],buildingTasks:[],pilingRecords:[],labTests:[],safetyIncidents:[],ncrRecords:[],documents:[],siteDeliveries:[],communications:[],snags:[],asBuiltDocs:[],reportsData:[],claimsItems:[]};
+var defaults={surveys:[],soilTests:[],gisLayers:[],finances:[],contracts:[],approvals:[],designBeams:[],designColumns:[],designSlabs:[],designFoundations:[],archNotes:[],waterPipes:[],drainPipes:[],electricalCircuits:[],transportSections:[],envAssessments:[],tempWorks:[],cadFiles:[],measurements:[],materials:[],boqItems:[],estimates:[],valueItems:[],lifecycleItems:[],purchaseOrders:[],awardedContracts:[],suppliers:[],plantItems:[],crewMembers:[],dailyLogs:[],programmeTasks:[],buildingTasks:[],pilingRecords:[],labTests:[],safetyIncidents:[],ncrRecords:[],documents:[],siteDeliveries:[],communications:[],snags:[],asBuiltDocs:[],claimsItems:[],notifications:[],photos:{}};
 Object.keys(defaults).forEach(function(k){if(!appData[k])appData[k]=defaults[k];});
-function save(){localStorage.setItem('constructorData',JSON.stringify(appData));render();}
+if(!appData.settings)appData.settings={role:'PM',darkMode:true,notifications:true};
+function save(){localStorage.setItem('constructorData',JSON.stringify(appData));render();updateBadge();}
+
+// ===================== NOTIFICATIONS =====================
+function notify(title,type,module){
+  appData.notifications.unshift({title:title,type:type||'info',module:module||'',time:new Date().toISOString(),read:false});
+  if(appData.notifications.length>100)appData.notifications.length=100;
+  save();
+}
+function updateBadge(){
+  var unread=appData.notifications.filter(function(n){return !n.read;}).length;
+  var badge=document.getElementById('notifBadge');
+  if(badge){badge.textContent=unread;badge.style.display=unread>0?'block':'none';}
+}
+function toggleNotifications(){
+  var panel=document.getElementById('notifPanel');
+  panel.classList.toggle('show');
+  if(panel.classList.contains('show')){
+    var html='<h4 style="margin-bottom:8px">Notifications</h4>';
+    if(!appData.notifications.length)html+='<p style="color:#9ca3af;font-size:12px">No notifications</p>';
+    appData.notifications.slice(0,20).forEach(function(n,i){
+      html+='<div class="notif-item" onclick="nav(\'/'+n.module+'\')" style="color:'+(n.read?'#9ca3af':'#f9fafb')+'"><b>'+n.title+'</b><br><span style="font-size:10px">'+new Date(n.time).toLocaleString()+'</span></div>';
+    });
+    panel.innerHTML=html;
+    appData.notifications.forEach(function(n){n.read=true;});
+    save();
+  }
+}
+
+// ===================== PHOTO CAPTURE =====================
+function capturePhoto(moduleId,itemIndex){
+  var input=document.createElement("input");
+  input.type="file";input.accept="image/*";input.capture="environment";
+  input.onchange=function(e){
+    var file=e.target.files[0];if(!file)return;
+    if(file.size>500000){notify("Photo too large. Max 500KB","warning");return;}
+    var reader=new FileReader();
+    reader.onload=function(ev){
+      var key=moduleId+"_"+itemIndex;
+      if(!appData.photos[key])appData.photos[key]=[];
+      if(appData.photos[key].length>=5){notify("Max 5 photos per item","warning");return;}
+      appData.photos[key].push({data:ev.target.result,time:new Date().toISOString()});
+      save();notify("📸 Photo captured","success",moduleId);
+    };
+    reader.readAsDataURL(file);
+  };
+  input.click();
+}
+    };
+    reader.readAsDataURL(file);
+  };
+  input.click();
+}
+
+// ===================== OFFLINE DETECTION =====================
+window.addEventListener('online',function(){document.getElementById('offlineBar').classList.remove('show');notify('✅ Back online - syncing','success');});
+window.addEventListener('offline',function(){document.getElementById('offlineBar').classList.add('show');notify('⚠️ Offline mode - saving locally','warning');});
+
+// ===================== PDF EXPORT =====================
+function exportPDF(title,content){
+  try{
+    var win=window.open('','_blank','width=800,height=600');
+    win.document.write('<html><head><title>'+title+'</title><style>body{font-family:sans-serif;padding:20px;color:#111}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ddd;padding:8px;text-align:left}th{background:#f3f4f6}h1{font-size:18px}h2{font-size:14px}.btn-row{display:flex;gap:6px;flex-wrap:nowrap}.btn-row .bt2{flex:1;min-width:0;font-size:12px;padding:10px 6px;white-space:nowrap}
+</style></head><body>'+content+'</body></html>');
+    win.document.close();
+    setTimeout(function(){win.print();},500);
+  }catch(e){
+    notify('PDF export requires popup permission','warning');
+  }
+}
+
+// ===================== STATE =====================
 var dark=true,openPhase=null,sidebarOpen=false;
 function toggleSB(){sidebarOpen=!sidebarOpen;render();}
 function closeSB(){sidebarOpen=false;render();}
@@ -64,160 +179,295 @@ function fmt(n){return (n||0).toLocaleString();}
 function fmtDate(d){return new Date(d).toLocaleDateString();}
 function pct(a,b){return b>0?Math.round(a/b*100):0;}
 
+// ===================== ROUTES =====================
 var phases=[
-  {name:'A. Pre-Construction',items:[{id:'surveying',emoji:'📐',title:'Surveying & Setting Out'},{id:'geotechnical',emoji:'🌍',title:'Geotechnical Investigation'},{id:'gis',emoji:'🗺️',title:'GIS & Site Mapping'},{id:'finance',emoji:'📊',title:'Project Finance & Appraisal'},{id:'contracts',emoji:'⚖️',title:'Contracts & Procurement'},{id:'land',emoji:'🏛️',title:'Land & Statutory Approvals'}]},
-  {name:'B. Design',items:[{id:'structures',emoji:'🏗️',title:'Structures (EC/BS)'},{id:'architectural',emoji:'🏛️',title:'Architectural Coordination'},{id:'water',emoji:'💧',title:'Water Supply Engineering'},{id:'drainage',emoji:'🚿',title:'Drainage & Sewerage'},{id:'electrical',emoji:'⚡',title:'Electrical Design'},{id:'transport',emoji:'🛣️',title:'Transport & Highway'},{id:'environmental',emoji:'🌱',title:'Environmental & Climate'},{id:'tempworks',emoji:'🏗️',title:'Temporary Works Design'},{id:'cad',emoji:'🎨',title:'CAD/BIM Viewer'}]},
-  {name:'C. Measurement & Costing',items:[{id:'measurements',emoji:'📏',title:'Measurements (NRM2)'},{id:'materials',emoji:'🧱',title:'Construction Materials'},{id:'quantity',emoji:'📊',title:'Quantity Survey (BOQ)'},{id:'estimating',emoji:'💰',title:'Estimating & Costing'},{id:'value',emoji:'💡',title:'Value Engineering'},{id:'lifecycle',emoji:'📈',title:'Life Cycle Costing'}]},
-  {name:'D. Procurement & Mobilization',items:[{id:'procurement',emoji:'🏪',title:'Procurement Management'},{id:'award',emoji:'📜',title:'Contract Award & Admin'},{id:'suppliers',emoji:'🤝',title:'Supplier Database'},{id:'plant',emoji:'🚜',title:'Plant & Equipment'},{id:'hr',emoji:'👷',title:'HR & Crew Mobilization'}]},
-  {name:'E. Construction',items:[{id:'construction',emoji:'📋',title:'Construction Management'},{id:'programme',emoji:'📅',title:'Programme & Schedule'},{id:'building',emoji:'🧱',title:'Building Construction'},{id:'substructure',emoji:'🔩',title:'Substructure & Piling'},{id:'lab',emoji:'🧪',title:'Materials Testing Lab'},{id:'safety',emoji:'⛑️',title:'Health, Safety & Welfare'},{id:'quality',emoji:'✅',title:'Quality Management'},{id:'docs',emoji:'📄',title:'Document Control'},{id:'logistics',emoji:'🚧',title:'Site Logistics'},{id:'stakeholder',emoji:'👥',title:'Stakeholder & Comms'}]},
-  {name:'F. Close-Out & Operations',items:[{id:'snagging',emoji:'🔍',title:'Snagging & Defects'},{id:'asbuilt',emoji:'📦',title:'As-Built & Digital Twin'},{id:'reports',emoji:'📈',title:'Reports & Analytics'},{id:'claims',emoji:'⚖️',title:'Claims & Dispute Resolution'}]}
+  {name:'A. Pre-Construction',items:[{id:'surveying',emoji:'📐',title:'Surveying & Setting Out'},{id:'geotechnical',emoji:'🌍',title:'Geotechnical Investigation'},{id:'gis',emoji:'🗺️',title:'GIS & Site Mapping'},{id:'finance',emoji:'📊',title:'Project Finance'},{id:'contracts',emoji:'⚖️',title:'Contracts & Procurement'},{id:'land',emoji:'🏛️',title:'Land & Approvals'}]},
+  {name:'B. Design',items:[{id:'structures',emoji:'🏗️',title:'Structures (EC/BS)'},{id:'architectural',emoji:'🏛️',title:'Architectural'},{id:'water',emoji:'💧',title:'Water Supply'},{id:'drainage',emoji:'🚿',title:'Drainage'},{id:'electrical',emoji:'⚡',title:'Electrical'},{id:'transport',emoji:'🛣️',title:'Transport & Highway'},{id:'environmental',emoji:'🌱',title:'Environmental'},{id:'tempworks',emoji:'🏗️',title:'Temporary Works'},{id:'cad',emoji:'🎨',title:'CAD/BIM'}]},
+  {name:'C. Measurement & Costing',items:[{id:'measurements',emoji:'📏',title:'Measurements'},{id:'materials',emoji:'🧱',title:'Materials'},{id:'quantity',emoji:'📊',title:'Quantity Survey'},{id:'estimating',emoji:'💰',title:'Estimating'},{id:'value',emoji:'💡',title:'Value Engineering'},{id:'lifecycle',emoji:'📈',title:'Life Cycle Costing'}]},
+  {name:'D. Procurement',items:[{id:'procurement',emoji:'🏪',title:'Procurement'},{id:'award',emoji:'📜',title:'Contract Award'},{id:'suppliers',emoji:'🤝',title:'Suppliers'},{id:'plant',emoji:'🚜',title:'Plant & Equipment'},{id:'hr',emoji:'👷',title:'HR & Crew'}]},
+  {name:'E. Construction',items:[{id:'construction',emoji:'📋',title:'Construction Mgt'},{id:'programme',emoji:'📅',title:'Programme'},{id:'building',emoji:'🧱',title:'Building Works'},{id:'substructure',emoji:'🔩',title:'Substructure'},{id:'lab',emoji:'🧪',title:'Materials Lab'},{id:'safety',emoji:'⛑️',title:'Health & Safety'},{id:'quality',emoji:'✅',title:'Quality'},{id:'docs',emoji:'📄',title:'Doc Control'},{id:'logistics',emoji:'🚧',title:'Logistics'},{id:'stakeholder',emoji:'👥',title:'Stakeholder'}]},
+  {name:'F. Close-Out',items:[{id:'snagging',emoji:'🔍',title:'Snagging & Defects'},{id:'asbuilt',emoji:'📦',title:'As-Built & Digital Twin'},{id:'reports',emoji:'📈',title:'Reports & Analytics'},{id:'claims',emoji:'⚖️',title:'Claims & Disputes'}]}
 ];
 
 var pages={};
+var forms={};
 
-// ===== PHASE F: CLOSE-OUT & OPERATIONS =====
-// 37. Snagging & Defects
-pages.snagging=function(){
-  var snags=appData.snags.length,open=appData.snags.filter(function(s){return s.status==='Open'}).length,closed=appData.snags.filter(function(s){return s.status==='Closed'}).length;
-  var h='<h1>🔍 Snagging & Defects</h1><p class="sub">Close-Out Phase · Punch list, defect tracking, handover</p>';
-  h+='<div class="gr3"><div class="cd" style="text-align:center"><h2 style="color:#60a5fa">'+snags+'</h2><p style="font-size:10px;color:#9ca3af">Total Snags</p></div><div class="cd" style="text-align:center"><h2 style="color:#f87171">'+open+'</h2><p style="font-size:10px;color:#9ca3af">Open</p></div><div class="cd" style="text-align:center"><h2 style="color:#34d399">'+closed+'</h2><p style="font-size:10px;color:#9ca3af">Closed</p></div></div>';
-  if(snags>0){h+='<div class="progress-bar" style="height:12px;margin-bottom:12px"><div class="progress-fill" style="width:'+pct(closed,snags)+'%;background:#34d399"></div></div><p style="font-size:10px;color:#9ca3af;text-align:center">'+pct(closed,snags)+'% Complete</p>';}
-  h+='<div class="cd"><h4>+ Add Snag</h4><form onsubmit="addSnag(event)"><input class="inp" id="snRef" placeholder="Snag Reference" required><input class="inp" id="snDesc" placeholder="Description of defect" required><div class="row"><input class="inp2" id="snLocation" placeholder="Location / Room" style="flex:1"><select class="inp2" id="snPriority" style="background:#111827;color:#f9fafb;border:1px solid #374151;border-radius:10px;flex:1"><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></div><div class="row"><select class="inp2" id="snTrade" style="background:#111827;color:#f9fafb;border:1px solid #374151;border-radius:10px;flex:1"><option>General</option><option>Carpentry</option><option>Painting</option><option>Plumbing</option><option>Electrical</option><option>Plastering</option><option>Flooring</option><option>External</option></select><input class="inp2" id="snResponsible" placeholder="Responsible party" style="flex:1"></div><button class="bt2" style="background:#dc2626;color:white">+ Add Snag</button></form></div>';
-  if(snags>0){h+='<div class="cd"><h3>📋 Snag List</h3><table><tr><th>Ref</th><th>Description</th><th>Location</th><th>Trade</th><th>Priority</th><th>Status</th><th>Action</th></tr>';appData.snags.forEach(function(s,i){h+='<tr><td><b>'+s.ref+'</b></td><td>'+s.desc+'</td><td>'+s.location+'</td><td>'+s.trade+'</td><td><span class="tag '+(s.priority==='Critical'||s.priority==='High'?'r':'')+'">'+s.priority+'</span></td><td><span class="tag '+(s.status==='Closed'?'g':'r')+'">'+s.status+'</span></td><td>'+(s.status==='Open'?'<button class="bt" style="background:#059669;color:white;font-size:10px;padding:4px 8px" onclick="event.stopPropagation();closeSnag('+i+')">✓ Close</button>':'<span style="font-size:10px;color:#9ca3af">'+s.closedDate+'</span>')+'</td></tr>';});h+='</table></div>';}
-  h+='<div class="cd"><h3>🏠 Handover Checklist</h3>';
-  ['All snags cleared','O&M manuals issued','Keys handed over','As-built drawings issued','Testing & commissioning complete','Certificates issued','Client training complete','Final account agreed'].forEach(function(item){h+='<div class="row" style="justify-content:space-between;padding:6px 0;border-bottom:1px solid #374151"><span style="color:#f9fafb;font-size:12px">'+item+'</span><span class="tag" style="cursor:pointer">☐</span></div>';});
-  h+='</div>';
-  return h;
-};
+// Helper to create form pages
 
-// 38. As-Built & Digital Twin
-pages.asbuilt=function(){
-  var docs=appData.asBuiltDocs.length;
-  var h='<h1>📦 As-Built & Digital Twin</h1><p class="sub">Close-Out Phase · Record drawings, BIM, O&M manuals</p>';
-  h+='<div class="gr2"><div class="cd" style="text-align:center"><h2 style="color:#60a5fa">'+docs+'</h2><p style="font-size:10px;color:#9ca3af">Documents</p></div><div class="cd" style="text-align:center"><h2 style="color:#34d399">'+appData.asBuiltDocs.filter(function(d){return d.status==='Issued'}).length+'</h2><p style="font-size:10px;color:#9ca3af">Issued</p></div></div>';
-  h+='<div class="cd"><h4>+ Add As-Built Document</h4><form onsubmit="addAsBuiltDoc(event)"><input class="inp" id="abRef" placeholder="Document Reference" required><input class="inp" id="abTitle" placeholder="Document Title" required><div class="row"><select class="inp2" id="abType" style="background:#111827;color:#f9fafb;border:1px solid #374151;border-radius:10px;flex:1"><option>As-Built Drawing</option><option>BIM Model</option><option>O&M Manual</option><option>Test Certificate</option><option>Warranty</option><option>Asset Register</option><option>User Guide</option></select><select class="inp2" id="abFormat" style="background:#111827;color:#f9fafb;border:1px solid #374151;border-radius:10px;flex:1"><option>PDF</option><option>DWG</option><option>IFC</option><option>RVT</option><option>Excel</option><option>Word</option></select></div><input class="inp" id="abLocation" placeholder="File location / path"><button class="bt2" style="background:#7c3aed;color:white">+ Add Document</button></form></div>';
-  if(docs>0){h+='<div class="cd"><h3>📦 As-Built Register</h3><table><tr><th>Ref</th><th>Title</th><th>Type</th><th>Format</th><th>Status</th></tr>';appData.asBuiltDocs.forEach(function(d){h+='<tr><td><b>'+d.ref+'</b></td><td>'+d.title+'</td><td><span class="tag b">'+d.type+'</span></td><td>'+d.format+'</td><td><span class="tag '+(d.status==='Issued'?'g':'y')+'">'+d.status+'</span></td></tr>';});h+='</table></div>';}
-  h+='<div class="cd"><h3>🏗️ Digital Twin Components</h3>';
-  ['Architectural model','Structural model','MEP model','Asset data linked','Sensor data integrated','Maintenance schedules loaded'].forEach(function(item){h+='<div class="row" style="justify-content:space-between;padding:6px 0;border-bottom:1px solid #374151"><span style="color:#f9fafb;font-size:12px">'+item+'</span><span class="tag y">Pending</span></div>';});
-  h+='</div>';
-  return h;
-};
+// Returns calculator HTML for enhanced modules
+function getModuleTools(id){
+  var tools = {
+    surveying: '<div class="cd"><h4>📐 Distance & Bearing Calculator</h4><div class="row"><div class="col"><label class="lbl">Point 1 Easting</label><input class="inp" id="sv_p1e" type="number" step="0.001" placeholder="E1"></div><div class="col"><label class="lbl">Point 1 Northing</label><input class="inp" id="sv_p1n" type="number" step="0.001" placeholder="N1"></div></div><div class="row"><div class="col"><label class="lbl">Point 2 Easting</label><input class="inp" id="sv_p2e" type="number" step="0.001" placeholder="E2"></div><div class="col"><label class="lbl">Point 2 Northing</label><input class="inp" id="sv_p2n" type="number" step="0.001" placeholder="N2"></div></div><button class="bt2" style="background:#7c3aed;color:white" onclick="calcDistance()">Calculate Distance & Bearing</button><div id="sv_distResult" style="margin-top:8px;padding:10px;background:#111827;border-radius:8px;font-size:12px;color:#9ca3af">Enter coordinates</div></div>',
+    geotechnical: '<div class="cd"><h4>🏗️ Foundation Recommendation</h4><div class="row"><div class="col"><label class="lbl">Bearing Capacity (kPa)</label><input class="inp" id="gt_bc" type="number" value="150"></div><div class="col"><label class="lbl">Building Load (kN)</label><input class="inp" id="gt_load" type="number" value="500"></div></div><button class="bt2" style="background:#059669;color:white" onclick="recommendFoundation()">Get Recommendation</button><div id="gt_result" style="margin-top:8px;padding:10px;background:#111827;border-radius:8px;font-size:12px;color:#9ca3af">Enter parameters</div></div>',
+    finance: '<div class="cd"><h4>📈 Cashflow Forecast</h4><div class="row"><div class="col"><label class="lbl">Duration (months)</label><input class="inp" id="fin_months" type="number" value="12"></div><div class="col"><label class="lbl">Budget ($)</label><input class="inp" id="fin_budget" type="number" value="1000000"></div></div><button class="bt2" style="background:#7c3aed;color:white" onclick="calcCashflow()">Generate Cashflow</button><div id="fin_cfResult" style="margin-top:8px;padding:10px;background:#111827;border-radius:8px;font-size:11px;color:#9ca3af">Enter values</div></div><div class="cd"><h4>💵 NPV Calculator</h4><div class="row"><div class="col"><label class="lbl">Investment ($)</label><input class="inp" id="fin_inv" type="number" value="100000"></div><div class="col"><label class="lbl">Annual Return ($)</label><input class="inp" id="fin_ret" type="number" value="25000"></div></div><div class="row"><div class="col"><label class="lbl">Years</label><input class="inp" id="fin_years" type="number" value="5"></div><div class="col"><label class="lbl">Discount Rate %</label><input class="inp" id="fin_rate" type="number" value="8"></div></div><button class="bt2" style="background:#059669;color:white" onclick="calcNPV()">Calculate NPV & IRR</button><div id="fin_npvResult" style="margin-top:8px;padding:10px;background:#111827;border-radius:8px;font-size:12px;color:#9ca3af">Enter values</div></div>',
+    structures: '<div class="cd"><h4>🔩 Quick Beam Check (EC2)</h4><div class="row"><div class="col"><label class="lbl">Span (m)</label><input class="inp" id="st_span" type="number" value="5"></div><div class="col"><label class="lbl">UDL (kN/m)</label><input class="inp" id="st_udl" type="number" value="25"></div></div><div class="row"><div class="col"><label class="lbl">Width (mm)</label><input class="inp" id="st_b" type="number" value="300"></div><div class="col"><label class="lbl">Depth (mm)</label><input class="inp" id="st_d" type="number" value="600"></div></div><button class="bt2" style="background:#2563eb;color:white" onclick="checkBeam()">Check Beam</button><div id="st_beamResult" style="margin-top:8px;padding:10px;background:#111827;border-radius:8px;font-size:12px;color:#9ca3af">Enter dimensions</div></div><div class="cd"><h4>🏛️ Column Capacity Check</h4><div class="row"><div class="col"><label class="lbl">Axial Load (kN)</label><input class="inp" id="st_colN" type="number" value="800"></div><div class="col"><label class="lbl">Width (mm)</label><input class="inp" id="st_colB" type="number" value="300"></div><div class="col"><label class="lbl">Depth (mm)</label><input class="inp" id="st_colD" type="number" value="300"></div></div><button class="bt2" style="background:#7c3aed;color:white" onclick="checkColumn()">Check Column</button><div id="st_colResult" style="margin-top:8px;padding:10px;background:#111827;border-radius:8px;font-size:12px;color:#9ca3af">Enter values</div></div>',
+    water: '<div class="cd"><h4>💧 Pipe Sizing (BS 6700)</h4><div class="row"><div class="col"><label class="lbl">Flow Rate (L/s)</label><input class="inp" id="ws_flow" type="number" value="0.5" step="0.1"></div><div class="col"><label class="lbl">Material</label><select class="sel" id="ws_mat"><option>Copper</option><option>HDPE</option><option>Steel</option></select></div></div><button class="bt2" style="background:#059669;color:white" onclick="sizePipe()">Calculate Pipe Size</button><div id="ws_pipeResult" style="margin-top:8px;padding:10px;background:#111827;border-radius:8px;font-size:12px;color:#9ca3af">Enter flow rate</div></div><div class="cd"><h4>🚰 Storage Tank Sizing</h4><div class="row"><div class="col"><label class="lbl">Occupants</label><input class="inp" id="ws_occ" type="number" value="10"></div><div class="col"><label class="lbl">Liters/person/day</label><input class="inp" id="ws_lpd" type="number" value="150"></div></div><button class="bt2" style="background:#2563eb;color:white" onclick="sizeTank()">Calculate Tank Size</button><div id="ws_tankResult" style="margin-top:8px;padding:10px;background:#111827;border-radius:8px;font-size:12px;color:#9ca3af">Enter values</div></div>',
+    electrical: '<div class="cd"><h4>⚡ Cable Sizing (BS 7671)</h4><div class="row"><div class="col"><label class="lbl">Power (kW)</label><input class="inp" id="el_power" type="number" value="5"></div><div class="col"><label class="lbl">Voltage (V)</label><input class="inp" id="el_volt" type="number" value="230"></div></div><div class="row"><div class="col"><label class="lbl">Cable Length (m)</label><input class="inp" id="el_len" type="number" value="30"></div><div class="col"><label class="lbl">Method</label><select class="sel" id="el_method"><option>Clipped Direct</option><option>In Conduit</option><option>Buried</option></select></div></div><button class="bt2" style="background:#f59e0b;color:#111827" onclick="sizeCable()">Calculate Cable Size</button><div id="el_cableResult" style="margin-top:8px;padding:10px;background:#111827;border-radius:8px;font-size:12px;color:#9ca3af">Enter parameters</div></div>',
+    lab: '<div class="cd"><h4>🧪 Concrete Mix Estimator</h4><div class="row"><div class="col"><label class="lbl">Target Strength (N/mm²)</label><input class="inp" id="lab_target" type="number" value="30"></div><div class="col"><label class="lbl">W/C Ratio</label><input class="inp" id="lab_wc" type="number" value="0.5" step="0.01"></div></div><button class="bt2" style="background:#7c3aed;color:white" onclick="estimateMix()">Estimate Mix Proportions</button><div id="lab_mixResult" style="margin-top:8px;padding:10px;background:#111827;border-radius:8px;font-size:12px;color:#9ca3af">Enter target strength</div></div>',
+  };
+  return tools[id] || "";
+}
+function makeForm(id,title,emoji,phase,fields,actions){
+  pages[id]=function(){
+    var h=emoji+'<h1>'+title+'</h1><p class="sub">'+phase+' Phase</p>';
+    // Stats if data exists
+    if(appData[id]&&appData[id].length){
+      h+='<div class="gr2"><div class="cd" style="text-align:center"><h2 style="color:#60a5fa">'+appData[id].length+'</h2><p style="font-size:10px;color:#9ca3af">Records</p></div></div>';
+    }
+    // Module-specific tools (calculators)
+    var toolsHTML = getModuleTools(id);
+    if(toolsHTML) h += toolsHTML;
+    // Add form
+    h+='<div class="cd"><h4>+ Add New</h4><form onsubmit="submitForm(event,\''+id+'\')">';
+    fields.forEach(function(f){
+      if(f.type==='select'){
+        h+='<select class="sel" id="'+id+'_'+f.id+'">';
+        (f.options||[]).forEach(function(o){h+='<option>'+o+'</option>';});
+        h+='</select>';
+      }else if(f.type==='textarea'){
+        h+='<textarea class="inp" id="'+id+'_'+f.id+'" placeholder="'+f.label+'" rows="2"></textarea>';
+      }else{
+        h+='<input class="inp" id="'+id+'_'+f.id+'" placeholder="'+f.label+'"'+(f.inputType?' type="'+f.inputType+'"':'')+(f.step?' step="'+f.step+'"':'')+'>';
+      }
+    });
+    h+='<div class="btn-row"><button type="submit" class="bt2" style="background:#2563eb;color:white;flex:1">+ Add</button>';
+    h+='<button type="button" class="bt2" style="background:#059669;color:white;flex:1" onclick="exportModulePDF(\''+id+'\',\''+title+'\')">📄 Export PDF</button></div>';
+    h+='</form></div>';
+    // Data table
+    if(appData[id]&&appData[id].length){
+      h+='<div class="cd"><h3>📋 Records ('+appData[id].length+')</h3><table>';
+      fields.forEach(function(f){h+='<th>'+f.label+'</th>';});
+      h+='<th>Photos</th><th></th>';
+      appData[id].forEach(function(item,i){
+        h+='<tr>';
+        fields.forEach(function(f){h+='<td>'+(item[f.id]||'')+'</td>';});
+        // Photos
+        var key=id+'_'+i;
+        h+='<td>'+(appData.photos[key]?'📸×'+appData.photos[key].length:'')+' <button class="bt" style="font-size:10px;padding:2px 6px" onclick="event.stopPropagation();capturePhoto(\''+id+'\','+i+')">📷</button></td>';
+        h+='<td><button class="bt" style="background:#dc2626;color:white;font-size:10px;padding:4px 8px" onclick="event.stopPropagation();deleteItem(\''+id+'\','+i+')">✕</button></td>';
+        h+='</tr>';
+        // Show photos if any
+        if(appData.photos[key]&&appData.photos[key].length){
+          h+='<tr><td colspan="'+(fields.length+2)+'"><div class="photo-grid">';
+          appData.photos[key].forEach(function(p){h+='<img src="'+p.data+'" class="photo-thumb" style="width:36px;height:36px" onclick="showPhoto(\''+p.data+'\')">';});
+          h+='</div></td></tr>';
+        }
+      });
+      h+='</table></div>';
+    }
+    if(actions)actions.forEach(function(a){h+='<div class="cd"><h4>'+a.label+'</h4>'+a.content+'</div>';});
+    return h;
+  };
+}
 
-// 39. Reports & Analytics
+// Define all 40 modules with fields
+var moduleDefs={};
+moduleDefs.surveying={title:'Surveying & Setting Out',emoji:'📐',phase:'Pre-Construction',fields:[{id:'name',label:'Point Name'},{id:'east',label:'Easting (m)',inputType:'number',step:'0.001'},{id:'north',label:'Northing (m)',inputType:'number',step:'0.001'},{id:'elev',label:'Elevation (m)',inputType:'number',step:'0.001'},{id:'type',label:'Type',type:'select',options:['Control','Setting Out','Reference','Benchmark']}]};
+moduleDefs.geotechnical={title:'Geotechnical Investigation',emoji:'🌍',phase:'Pre-Construction',fields:[{id:'borehole',label:'Borehole ID'},{id:'depth',label:'Depth (m)',inputType:'number',step:'0.1'},{id:'soilType',label:'Soil Type',type:'select',options:['Clay','Silt','Sand','Gravel','Rock','Mixed']},{id:'bearing',label:'Bearing Capacity (kPa)',inputType:'number'},{id:'spt',label:'SPT N-Value',inputType:'number'},{id:'notes',label:'Notes'}]};
+moduleDefs.gis={title:'GIS & Site Mapping',emoji:'🗺️',phase:'Pre-Construction',fields:[{id:'name',label:'Layer Name'},{id:'type',label:'Layer Type',type:'select',options:['Boundary','Topography','Utilities','Vegetation','Access','Constraints']}]};
+moduleDefs.finance={title:'Project Finance',emoji:'📊',phase:'Pre-Construction',fields:[{id:'desc',label:'Description'},{id:'amount',label:'Amount ($)',inputType:'number'},{id:'cat',label:'Category',type:'select',options:['Land','Design','Materials','Labour','Equipment','Permits','Revenue','Other']}]};
+moduleDefs.contracts={title:'Contracts & Procurement',emoji:'⚖️',phase:'Pre-Construction',fields:[{id:'name',label:'Contract Name'},{id:'type',label:'Contract Type',type:'select',options:['Lump Sum','Design & Build','JCT','NEC','FIDIC','Cost Plus']},{id:'value',label:'Value ($)',inputType:'number'}]};
+moduleDefs.land={title:'Land & Approvals',emoji:'🏛️',phase:'Pre-Construction',fields:[{id:'name',label:'Approval Name'},{id:'type',label:'Type',type:'select',options:['Planning','Building Regs','Environmental','Highway','Utilities','Heritage']},{id:'authority',label:'Authority'},{id:'status',label:'Status',type:'select',options:['Pending','Approved','Rejected']}]};
+moduleDefs.structures={title:'Structures (EC/BS)',emoji:'🏗️',phase:'Design',fields:[{id:'name',label:'Element ID'},{id:'type',label:'Type',type:'select',options:['Beam','Column','Slab','Foundation','Wall']},{id:'span',label:'Span/Length (m)',inputType:'number'},{id:'load',label:'Design Load (kN)',inputType:'number'},{id:'grade',label:'Grade',type:'select',options:['C25/30','C30/37','C35/45','C40/50','S275','S355']}]};
+moduleDefs.architectural={title:'Architectural Coordination',emoji:'🏛️',phase:'Design',fields:[{id:'ref',label:'Drawing Reference'},{id:'type',label:'Type',type:'select',options:['Floor Plan','Elevation','Section','Detail','Schedule']},{id:'status',label:'Status',type:'select',options:['Draft','For Review','Approved','IFC']}]};
+moduleDefs.water={title:'Water Supply Engineering',emoji:'💧',phase:'Design',fields:[{id:'name',label:'Pipe Run ID'},{id:'length',label:'Length (m)',inputType:'number'},{id:'dia',label:'Diameter (mm)',inputType:'number'},{id:'material',label:'Material',type:'select',options:['Copper','PEX','HDPE','Steel','PVC']},{id:'fixtures',label:'Fixtures Served'}]};
+moduleDefs.drainage={title:'Drainage & Sewerage',emoji:'🚿',phase:'Design',fields:[{id:'name',label:'Drain Run ID'},{id:'length',label:'Length (m)',inputType:'number'},{id:'dia',label:'Diameter (mm)',inputType:'number'},{id:'gradient',label:'Gradient (1:X)',inputType:'number'},{id:'type',label:'Type',type:'select',options:['Foul','Surface Water','Combined']}]};
+moduleDefs.electrical={title:'Electrical Design',emoji:'⚡',phase:'Design',fields:[{id:'name',label:'Circuit ID'},{id:'type',label:'Type',type:'select',options:['Lighting','Power','HVAC','Equipment','Fire Alarm']},{id:'load',label:'Load (W)',inputType:'number'},{id:'voltage',label:'Voltage (V)',inputType:'number'},{id:'phase',label:'Phase',type:'select',options:['Single','Three']}]};
+moduleDefs.transport={title:'Transport & Highway',emoji:'🛣️',phase:'Design',fields:[{id:'name',label:'Section ID'},{id:'length',label:'Length (m)',inputType:'number'},{id:'width',label:'Width (m)',inputType:'number'},{id:'type',label:'Type',type:'select',options:['Single Carriageway','Dual Carriageway','Junction','Roundabout']},{id:'cbr',label:'CBR (%)',inputType:'number'}]};
+moduleDefs.environmental={title:'Environmental & Climate',emoji:'🌱',phase:'Design',fields:[{id:'name',label:'Assessment Title'},{id:'type',label:'Type',type:'select',options:['EIA','Carbon Footprint','BREEAM','LEED','Biodiversity','Flood Risk','Air Quality']},{id:'status',label:'Status',type:'select',options:['Not Started','In Progress','Complete']}]};
+moduleDefs.tempworks={title:'Temporary Works',emoji:'🏗️',phase:'Design',fields:[{id:'name',label:'Item Name'},{id:'type',label:'Type',type:'select',options:['Formwork','Falsework','Scaffolding','Excavation Support','Crane Base']},{id:'risk',label:'Risk Level',type:'select',options:['Low','Medium','High']}]};
+moduleDefs.cad={title:'CAD/BIM Viewer',emoji:'🎨',phase:'Design',fields:[{id:'name',label:'File Name'},{id:'type',label:'Type',type:'select',options:['CAD (.dwg)','BIM (.rvt)','PDF','IFC','Spec']},{id:'version',label:'Version'},{id:'status',label:'Status',type:'select',options:['WIP','Shared','Published']}]};
+moduleDefs.measurements={title:'Measurements (NRM2)',emoji:'📏',phase:'Measurement',fields:[{id:'desc',label:'Description'},{id:'section',label:'Work Section',type:'select',options:['Excavation','Concrete','Brickwork','Steelwork','Timber','Roofing','Finishes']},{id:'length',label:'Length (m)',inputType:'number'},{id:'width',label:'Width (m)',inputType:'number'},{id:'height',label:'Height (m)',inputType:'number'},{id:'unit',label:'Unit'}]};
+moduleDefs.materials={title:'Construction Materials',emoji:'🧱',phase:'Measurement',fields:[{id:'name',label:'Material Name'},{id:'cat',label:'Category',type:'select',options:['Concrete','Steel','Timber','Masonry','Finishes','M&E','Aggregates']},{id:'unit',label:'Unit'},{id:'rate',label:'Rate ($)',inputType:'number'},{id:'wastage',label:'Wastage %',inputType:'number'}]};
+moduleDefs.quantity={title:'Quantity Survey (BOQ)',emoji:'📊',phase:'Measurement',fields:[{id:'ref',label:'Reference'},{id:'desc',label:'Description'},{id:'section',label:'Section',type:'select',options:['Substructure','Superstructure','Finishes','M&E','External']},{id:'qty',label:'Quantity',inputType:'number'},{id:'unit',label:'Unit'},{id:'rate',label:'Rate ($)',inputType:'number'}]};
+moduleDefs.estimating={title:'Estimating & Costing',emoji:'💰',phase:'Measurement',fields:[{id:'name',label:'Estimate Name'},{id:'materials',label:'Material Cost ($)',inputType:'number'},{id:'labour',label:'Labour Cost ($)',inputType:'number'},{id:'plant',label:'Plant Cost ($)',inputType:'number'},{id:'subcontract',label:'Subcontract ($)',inputType:'number'},{id:'contingency',label:'Contingency %',inputType:'number'}]};
+moduleDefs.value={title:'Value Engineering',emoji:'💡',phase:'Measurement',fields:[{id:'name',label:'Proposal Name'},{id:'original',label:'Original Cost ($)',inputType:'number'},{id:'proposed',label:'Proposed Cost ($)',inputType:'number'},{id:'status',label:'Status',type:'select',options:['Proposed','Under Review','Accepted','Rejected','Implemented']}]};
+moduleDefs.lifecycle={title:'Life Cycle Costing',emoji:'📈',phase:'Measurement',fields:[{id:'name',label:'Asset Name'},{id:'capital',label:'Capital Cost ($)',inputType:'number'},{id:'om',label:'Annual O&M ($)',inputType:'number'},{id:'life',label:'Lifespan (years)',inputType:'number'},{id:'disposal',label:'Disposal Cost ($)',inputType:'number'}]};
+moduleDefs.procurement={title:'Procurement Management',emoji:'🏪',phase:'Procurement',fields:[{id:'number',label:'PO Number'},{id:'supplier',label:'Supplier'},{id:'value',label:'Value ($)',inputType:'number'},{id:'cat',label:'Category',type:'select',options:['Materials','Plant','Subcontract','Consultancy','PPE']},{id:'priority',label:'Priority',type:'select',options:['Normal','Urgent','Critical']},{id:'status',label:'Status',type:'select',options:['Pending','Approved','Rejected','Delivered']}]};
+moduleDefs.award={title:'Contract Award',emoji:'📜',phase:'Procurement',fields:[{id:'name',label:'Contract Name'},{id:'contractor',label:'Awarded To'},{id:'value',label:'Value ($)',inputType:'number'},{id:'start',label:'Start Date',inputType:'date'},{id:'end',label:'End Date',inputType:'date'}]};
+moduleDefs.suppliers={title:'Supplier Database',emoji:'🤝',phase:'Procurement',fields:[{id:'name',label:'Company Name'},{id:'contact',label:'Contact Person'},{id:'phone',label:'Phone'},{id:'email',label:'Email'},{id:'cat',label:'Category',type:'select',options:['Materials','Plant','Subcontractor','Consultant','PPE']},{id:'rating',label:'Rating (1-5)',inputType:'number'}]};
+moduleDefs.plant={title:'Plant & Equipment',emoji:'🚜',phase:'Procurement',fields:[{id:'name',label:'Equipment Name'},{id:'type',label:'Type',type:'select',options:['Excavator','Crane','Dumper','Mixer','Generator','Pump']},{id:'rate',label:'Daily Rate ($)',inputType:'number'},{id:'days',label:'Days on Site',inputType:'number'},{id:'ownership',label:'Ownership',type:'select',options:['Owned','Hired','Leased']}]};
+moduleDefs.hr={title:'HR & Crew Mobilization',emoji:'👷',phase:'Procurement',fields:[{id:'name',label:'Full Name'},{id:'role',label:'Role',type:'select',options:['Site Manager','Engineer','Foreman','Ganger','Operative','Labourer','H&S Officer']},{id:'trade',label:'Trade/Skill'},{id:'cert',label:'Certification'},{id:'rate',label:'Daily Rate ($)',inputType:'number'}]};
+moduleDefs.construction={title:'Construction Management',emoji:'📋',phase:'Construction',fields:[{id:'weather',label:'Weather'},{id:'workers',label:'Workers on Site',inputType:'number'},{id:'hours',label:'Hours Worked',inputType:'number'},{id:'desc',label:'Work Completed',type:'textarea'},{id:'issues',label:'Issues/Delays'}]};
+moduleDefs.programme={title:'Programme & Schedule',emoji:'📅',phase:'Construction',fields:[{id:'name',label:'Task Name'},{id:'start',label:'Start Date',inputType:'date'},{id:'end',label:'End Date',inputType:'date'},{id:'duration',label:'Duration (days)',inputType:'number'},{id:'priority',label:'Priority',type:'select',options:['Normal','High','Critical']},{id:'depends',label:'Depends On'}]};
+moduleDefs.building={title:'Building Construction',emoji:'🧱',phase:'Construction',fields:[{id:'name',label:'Activity Name'},{id:'trade',label:'Trade',type:'select',options:['Blockwork','Concrete','Steel','Timber','Roofing','Cladding','Plastering']},{id:'floor',label:'Floor Level',type:'select',options:['Ground','1st','2nd','Roof','External']},{id:'qty',label:'Quantity',inputType:'number'},{id:'unit',label:'Unit'}]};
+moduleDefs.substructure={title:'Substructure & Piling',emoji:'🔩',phase:'Construction',fields:[{id:'ref',label:'Pile Reference'},{id:'type',label:'Type',type:'select',options:['Bored','Driven','CFA','Sheet','Mini-pile']},{id:'dia',label:'Diameter (mm)',inputType:'number'},{id:'desLen',label:'Design Length (m)',inputType:'number'},{id:'achLen',label:'Achieved Length (m)',inputType:'number'},{id:'conc',label:'Concrete (m³)',inputType:'number'}]};
+moduleDefs.lab={title:'Materials Testing Lab',emoji:'🧪',phase:'Construction',fields:[{id:'ref',label:'Sample Reference'},{id:'type',label:'Test Type',type:'select',options:['Cube (7-day)','Cube (28-day)','Slump','Compaction','Rebend','Gradation']},{id:'location',label:'Location'},{id:'value',label:'Test Result'},{id:'required',label:'Required Value'},{id:'result',label:'Outcome',type:'select',options:['Pass','Fail','Pending']}]};
+moduleDefs.safety={title:'Health, Safety & Welfare',emoji:'⛑️',phase:'Construction',fields:[{id:'desc',label:'Incident Description'},{id:'type',label:'Type',type:'select',options:['Near Miss','Minor Injury','Lost Time Injury','Property Damage','Environmental']},{id:'severity',label:'Severity',type:'select',options:['Low','Medium','High','Critical']},{id:'action',label:'Action Taken'}]};
+moduleDefs.quality={title:'Quality Management',emoji:'✅',phase:'Construction',fields:[{id:'ref',label:'NCR Reference'},{id:'desc',label:'Non-conformance',type:'textarea'},{id:'location',label:'Location'},{id:'severity',label:'Severity',type:'select',options:['Minor','Major','Critical']},{id:'action',label:'Corrective Action'},{id:'status',label:'Status',type:'select',options:['Open','In Progress','Closed']}]};
+moduleDefs.docs={title:'Document Control',emoji:'📄',phase:'Construction',fields:[{id:'ref',label:'Document Ref'},{id:'title',label:'Document Title'},{id:'type',label:'Type',type:'select',options:['Drawing','Specification','RFI','Submittal','Method Statement','Report']},{id:'rev',label:'Revision'},{id:'status',label:'Status',type:'select',options:['Draft','For Review','Approved','Superseded']}]};
+moduleDefs.logistics={title:'Site Logistics',emoji:'🚧',phase:'Construction',fields:[{id:'supplier',label:'Supplier'},{id:'materials',label:'Materials'},{id:'vehicle',label:'Vehicle Reg'},{id:'time',label:'Time',inputType:'time'},{id:'status',label:'Status',type:'select',options:['Expected','Received','Rejected']}]};
+moduleDefs.stakeholder={title:'Stakeholder Communication',emoji:'👥',phase:'Construction',fields:[{id:'subject',label:'Subject'},{id:'type',label:'Type',type:'select',options:['Meeting','Email','Letter','Phone','Community','Client']},{id:'with',label:'With/Attendees'},{id:'notes',label:'Notes',type:'textarea'}]};
+moduleDefs.snagging={title:'Snagging & Defects',emoji:'🔍',phase:'Close-Out',fields:[{id:'ref',label:'Snag Reference'},{id:'desc',label:'Description',type:'textarea'},{id:'location',label:'Location/Room'},{id:'trade',label:'Trade',type:'select',options:['General','Carpentry','Painting','Plumbing','Electrical','Plastering']},{id:'priority',label:'Priority',type:'select',options:['Low','Medium','High','Critical']},{id:'responsible',label:'Responsible'},{id:'status',label:'Status',type:'select',options:['Open','In Progress','Closed']}]};
+moduleDefs.asbuilt={title:'As-Built & Digital Twin',emoji:'📦',phase:'Close-Out',fields:[{id:'ref',label:'Document Ref'},{id:'title',label:'Title'},{id:'type',label:'Type',type:'select',options:['As-Built Drawing','BIM Model','O&M Manual','Test Certificate','Warranty']},{id:'format',label:'Format',type:'select',options:['PDF','DWG','IFC','RVT','Excel']},{id:'status',label:'Status',type:'select',options:['Draft','Issued']}]};
+moduleDefs.claims={title:'Claims & Disputes',emoji:'⚖️',phase:'Close-Out',fields:[{id:'ref',label:'Claim Reference'},{id:'title',label:'Claim Title'},{id:'type',label:'Type',type:'select',options:['Extension of Time','Loss & Expense','Variation','Disruption','Payment']},{id:'amount',label:'Amount ($)',inputType:'number'},{id:'party',label:'Claimant'},{id:'respondent',label:'Respondent'},{id:'status',label:'Status',type:'select',options:['Active','Submitted','Resolved','Rejected']}]};
+
+// Generate all module pages
+Object.keys(moduleDefs).forEach(function(id){
+  var def=moduleDefs[id];
+  makeForm(id,def.title,def.emoji,def.phase,def.fields);
+});
+
+// Enhanced Reports module
 pages.reports=function(){
-  var reports=appData.reportsData.length;
-  var h='<h1>📈 Reports & Analytics</h1><p class="sub">Close-Out Phase · Project reports, KPIs, dashboards</p>';
-  // Auto-generate project stats from all data
-  var totalItems=0;Object.keys(appData).forEach(function(k){if(Array.isArray(appData[k]))totalItems+=appData[k].length;});
-  var phasesComplete=[appData.surveys.length>0,appData.soilTests.length>0,appData.finances.length>0,appData.designBeams.length>0,appData.boqItems.length>0,appData.purchaseOrders.length>0,appData.dailyLogs.length>0,appData.snags.filter(function(s){return s.status==='Closed'}).length>0].filter(Boolean).length;
-  h+='<div class="gr3"><div class="cd" style="text-align:center"><h2 style="color:#60a5fa">'+totalItems+'</h2><p style="font-size:10px;color:#9ca3af">Total Records</p></div><div class="cd" style="text-align:center"><h2 style="color:#34d399">'+phasesComplete+'/8</h2><p style="font-size:10px;color:#9ca3af">Phases Active</p></div><div class="cd" style="text-align:center"><h2 style="color:#fbbf24">'+appData.dailyLogs.length+'</h2><p style="font-size:10px;color:#9ca3af">Site Days</p></div></div>';
-  // Progress bar
-  h+='<div class="cd"><h3>📊 Project Completion</h3><div class="progress-bar" style="height:20px;border-radius:10px"><div class="progress-fill" style="width:'+(phasesComplete/8*100)+'%;background:linear-gradient(90deg,#2563eb,#7c3aed,#34d399);border-radius:10px"></div></div><p style="text-align:center;margin-top:4px;font-size:16px;font-weight:bold;color:#60a5fa">'+(phasesComplete/8*100).toFixed(0)+'%</p></div>';
-  // Module activity summary
-  h+='<div class="cd"><h3>📋 Module Activity Summary</h3><div class="gr2">';
-  var cats={surveying:'📐 Survey ('+appData.surveys.length+')',soil:'🌍 Soil Tests ('+appData.soilTests.length+')',design:'🏗️ Design ('+(appData.designBeams.length+appData.designColumns.length)+')',boq:'📊 BOQ Items ('+appData.boqItems.length+')',po:'🏪 POs ('+appData.purchaseOrders.length+')',safety:'⛑️ Incidents ('+appData.safetyIncidents.length+')',ncr:'✅ NCRs ('+appData.ncrRecords.length+')',snags:'🔍 Snags ('+appData.snags.length+')'};
-  Object.entries(cats).forEach(function(e){h+='<div class="cd" style="text-align:center;padding:12px"><span style="font-size:12px;color:#f9fafb">'+e[1]+'</span></div>';});
-  h+='</div></div>';
-  // Generate report
-  h+='<div class="cd"><h3>📄 Generate Project Report</h3><p style="color:#9ca3af;font-size:12px;margin-bottom:8px">Auto-generated summary from all project data</p>';
-  h+='<div class="row"><div class="col"><label class="lbl">Report Type</label><select class="sel" id="rpType"><option>Progress Report</option><option>Financial Summary</option><option>Quality Report</option><option>Safety Report</option><option>Close-Out Report</option></select></div></div><button class="bt2" style="background:#059669;color:white" onclick="generateReport()">📄 Generate Report</button><div id="rpResult" style="margin-top:8px;padding:12px;background:#111827;border-radius:8px;font-size:11px;color:#9ca3af;max-height:200px;overflow-y:auto;white-space:pre-wrap">Select a report type and click Generate</div></div>';
+  var totalRecords=0;Object.keys(appData).forEach(function(k){if(Array.isArray(appData[k]))totalRecords+=appData[k].length;});
+  var phasesActive=[appData.surveys.length>0,appData.finances.length>0,appData.designBeams.length>0,appData.boqItems.length>0,appData.purchaseOrders.length>0,appData.dailyLogs.length>0,appData.snags.length>0,appData.asBuiltDocs.length>0].filter(Boolean).length;
+  var h='<h1>📈 Reports & Analytics</h1><p class="sub">Close-Out Phase · KPIs, dashboards, auto-generated reports</p>';
+  h+='<div class="role-tabs"><button class="role-tab active" onclick="switchRole(\'PM\')">👤 PM View</button><button class="role-tab" onclick="switchRole(\'QS\')">💰 QS View</button><button class="role-tab" onclick="switchRole(\'SM\')">🏗️ Site Mgr</button><button class="role-tab" onclick="switchRole(\'HS\')">⛑️ H&S</button></div>';
+  // KPI Cards
+  h+='<div class="gr3"><div class="cd" style="text-align:center"><h2 style="color:#60a5fa">'+totalRecords+'</h2><p style="font-size:10px;color:#9ca3af">Records</p></div><div class="cd" style="text-align:center"><h2 style="color:#34d399">'+phasesActive+'/8</h2><p style="font-size:10px;color:#9ca3af">Phases Active</p></div><div class="cd" style="text-align:center"><h2 style="color:#fbbf24">'+appData.snags.filter(function(s){return s.status==='Closed'}).length+'/'+appData.snags.length+'</h2><p style="font-size:10px;color:#9ca3af">Snags Closed</p></div></div>';
+  // Progress
+  h+='<div class="cd"><h3>📊 Project Progress</h3><div class="progress-bar" style="height:20px;border-radius:10px"><div class="progress-fill" style="width:'+pct(phasesActive,8)+'%;background:linear-gradient(90deg,#2563eb,#7c3aed,#34d399);border-radius:10px"></div></div><p style="text-align:center;margin-top:4px;font-size:18px;font-weight:bold;color:#60a5fa">'+pct(phasesActive,8)+'%</p></div>';
+  // Charts placeholder
+  h+='<div class="gr2"><div class="cd"><h4>📈 Activity Trend</h4><div class="chart-box">Chart coming with full chart.js integration</div></div><div class="cd"><h4>💰 Cost Breakdown</h4><div class="chart-box">Pie chart of costs by category</div></div></div>';
+  // Quick report buttons
+  h+='<div class="cd"><h3>📄 Quick Reports</h3><div class="gr2">';
+  [{label:'Progress Report',color:'#2563eb'},{label:'Financial Summary',color:'#059669'},{label:'Quality Report',color:'#7c3aed'},{label:'Safety Report',color:'#dc2626'},{label:'Snag Status',color:'#f59e0b'},{label:'Close-Out Summary',color:'#0891b2'}].forEach(function(r){h+='<button class="bt2" style="background:'+r.color+';color:white" onclick="generateQuickReport(\''+r.label+'\')">📄 '+r.label+'</button>';});
+  h+='</div></div><div id="reportOutput" style="margin-top:8px"></div>';
   return h;
 };
-
-// 40. Claims & Dispute Resolution
-pages.claims=function(){
-  var claims=appData.claimsItems.length,active=appData.claimsItems.filter(function(c){return c.status==='Active'||c.status==='Submitted'}).length;
-  var totalClaimed=appData.claimsItems.reduce(function(s,c){return s+(+c.amount||0)},0);
-  var h='<h1>⚖️ Claims & Dispute Resolution</h1><p class="sub">Close-Out Phase · Contract claims, variations, disputes</p>';
-  h+='<div class="gr3"><div class="cd" style="text-align:center"><h2 style="color:#60a5fa">'+claims+'</h2><p style="font-size:10px;color:#9ca3af">Claims</p></div><div class="cd" style="text-align:center"><h2 style="color:#f87171">'+active+'</h2><p style="font-size:10px;color:#9ca3af">Active</p></div><div class="cd" style="text-align:center"><h2 style="color:#fbbf24">$'+fmt(totalClaimed)+'</h2><p style="font-size:10px;color:#9ca3af">Claimed</p></div></div>';
-  h+='<div class="cd"><h4>+ Register Claim</h4><form onsubmit="addClaim(event)"><input class="inp" id="clRef" placeholder="Claim Reference" required><input class="inp" id="clTitle" placeholder="Claim Title" required><div class="row"><select class="inp2" id="clType" style="background:#111827;color:#f9fafb;border:1px solid #374151;border-radius:10px;flex:1"><option>Extension of Time</option><option>Loss & Expense</option><option>Variation</option><option>Disruption</option><option>Defective Works</option><option>Payment</option></select><input class="inp2" id="clAmount" placeholder="Amount ($)" type="number" style="flex:1"></div><div class="row"><input class="inp2" id="clParty" placeholder="Claimant" style="flex:1"><input class="inp2" id="clRespondent" placeholder="Respondent" style="flex:1"></div><textarea class="inp" id="clDetails" placeholder="Claim details and justification..." rows="2" style="resize:vertical"></textarea><button class="bt2" style="background:#dc2626;color:white">+ Register Claim</button></form></div>';
-  if(claims>0){h+='<div class="cd"><h3>⚖️ Claims Register</h3><table><tr><th>Ref</th><th>Title</th><th>Type</th><th>Amount</th><th>Status</th></tr>';appData.claimsItems.forEach(function(c){h+='<tr><td><b>'+c.ref+'</b></td><td>'+c.title+'</td><td><span class="tag b">'+c.type+'</span></td><td>$'+fmt(c.amount)+'</td><td><span class="tag '+(c.status==='Resolved'?'g':c.status==='Rejected'?'r':'y')+'">'+c.status+'</span></td></tr>';});h+='</table></div>';}
-  h+='<div class="cd"><h3>📜 Dispute Resolution Ladder</h3>';
-  ['1. Negotiation between parties','2. Senior management meeting','3. Mediation (neutral third party)','4. Conciliation','5. Adjudication (statutory)','6. Arbitration','7. Litigation (court)'].forEach(function(s,i){h+='<div class="row" style="padding:6px 0;border-bottom:1px solid #374151"><span style="color:'+(i<3?'#34d399':i<5?'#fbbf24':'#f87171')+';font-size:12px;flex:1">'+s+'</span><span class="tag" style="font-size:9px">Step '+(i+1)+'</span></div>';});
-  h+='</div>';
-  return h;
-};
-
-// ===== PHASES A-E (condensed) =====
-var quickForms={};
-function qf(id,fields,title){quickForms[id]=function(){var h='<h1>'+title+'</h1><p class="sub">Module</p><div class="cd"><h4>+ Add</h4><form onsubmit="'+id+'Form(event)">';fields.forEach(function(f){h+='<input class="inp" id="'+f.id+'" placeholder="'+f.label+'"'+(f.type?' type="'+f.type+'"':'')+'>';});h+='<button class="bt2" style="background:#2563eb;color:white">+ Add</button></form></div>';return h;};}
-['surveying','📐 Surveying','geotechnical','🌍 Geotechnical','gis','🗺️ GIS','finance','📊 Finance','contracts','⚖️ Contracts','land','🏛️ Approvals','structures','🏗️ Structures','architectural','🏛️ Architectural','water','💧 Water','drainage','🚿 Drainage','electrical','⚡ Electrical','transport','🛣️ Transport','environmental','🌱 Environmental','tempworks','🏗️ Temp Works','cad','🎨 CAD/BIM','measurements','📏 Measurements','materials','🧱 Materials','quantity','📊 BOQ','estimating','💰 Estimating','value','💡 Value Eng','lifecycle','📈 Life Cycle','procurement','🏪 Procurement','award','📜 Awards','suppliers','🤝 Suppliers','plant','🚜 Plant','hr','👷 HR & Crew','construction','📋 Construction','programme','📅 Programme','building','🧱 Building','substructure','🔩 Substructure','lab','🧪 Materials Lab','safety','⛑️ Safety','quality','✅ Quality','docs','📄 Doc Control','logistics','🚧 Logistics','stakeholder','👥 Stakeholder'].forEach(function(v,i){if(i%2===0&&!pages[v])pages[v]=function(){var t=arguments.callee.title||v;return'<h1>'+t+'</h1><p class="sub">Module</p><div class="cd"><h4>+ Add Entry</h4><form onsubmit="event.preventDefault();alert(\'Add form\')"><input class="inp" placeholder="Entry"><button class="bt2" style="background:#2563eb;color:white">+ Add</button></form></div>';};});
+function switchRole(role){appData.settings.role=role;save();notify('Switched to '+role+' dashboard','info');}
+function generateQuickReport(type){
+  var rep='<h2>'+type+'</h2><p>Date: '+fmtDate(new Date())+'</p><hr style="margin:12px 0;border-color:#374151">';
+  if(type==='Progress Report'){rep+='<p><b>Total Records:</b> '+Object.keys(appData).filter(function(k){return Array.isArray(appData[k])}).reduce(function(s,k){return s+appData[k].length},0)+'</p><p><b>Daily Logs:</b> '+appData.dailyLogs.length+'</p><p><b>Tasks:</b> '+appData.programmeTasks.length+'</p><p><b>Building Activities:</b> '+appData.buildingTasks.length+'</p><p><b>Piles Installed:</b> '+appData.pilingRecords.length+'</p>';}
+  else if(type==='Financial Summary'){rep+='<p><b>BOQ Items:</b> '+appData.boqItems.length+' - Total: $'+fmt(appData.boqItems.reduce(function(s,i){return s+(+i.qty||0)*(+i.rate||0)},0))+'</p><p><b>Purchase Orders:</b> '+appData.purchaseOrders.length+' - Total: $'+fmt(appData.purchaseOrders.reduce(function(s,p){return s+(+p.value||0)},0))+'</p><p><b>Claims:</b> '+appData.claimsItems.length+' - Total: $'+fmt(appData.claimsItems.reduce(function(s,c){return s+(+c.amount||0)},0))+'</p>';}
+  else if(type==='Quality Report'){rep+='<p><b>NCRs:</b> '+appData.ncrRecords.length+' ('+appData.ncrRecords.filter(function(n){return n.status==='Open'}).length+' open)</p><p><b>Lab Tests:</b> '+appData.labTests.length+' ('+appData.labTests.filter(function(t){return t.result==='Pass'}).length+' passed)</p>';}
+  else if(type==='Safety Report'){rep+='<p><b>Incidents:</b> '+appData.safetyIncidents.length+'</p><p><b>LTI:</b> '+appData.safetyIncidents.filter(function(s){return s.type==='Lost Time Injury'}).length+'</p><p><b>Near Misses:</b> '+appData.safetyIncidents.filter(function(s){return s.type==='Near Miss'}).length+'</p>';}
+  else if(type==='Snag Status'){rep+='<p><b>Total Snags:</b> '+appData.snags.length+'</p><p><b>Open:</b> '+appData.snags.filter(function(s){return s.status==='Open'}).length+'</p><p><b>Closed:</b> '+appData.snags.filter(function(s){return s.status==='Closed'}).length+'</p><p><b>Completion:</b> '+pct(appData.snags.filter(function(s){return s.status==='Closed'}).length,appData.snags.length)+'%</p>';}
+  else{rep+='<p><b>As-Built Docs:</b> '+appData.asBuiltDocs.length+' issued</p><p><b>Claims Resolved:</b> '+appData.claimsItems.filter(function(c){return c.status==='Resolved'}).length+'/'+appData.claimsItems.length+'</p><p><b>All Phases Complete:</b> '+(appData.snags.filter(function(s){return s.status==='Open'}).length===0?'Yes ✅':'No - snags remain')+'</p>';}
+  document.getElementById('reportOutput').innerHTML='<div class="cd">'+rep+'<button class="bt2" style="background:#059669;color:white;margin-top:8px" onclick="exportPDF(\''+type+'\',\''+rep.replace(/'/g,"\\'")+'\')">📄 Export PDF</button></div>';
+}
 
 // ===================== ACTIONS =====================
-// Phase F actions
-function addSnag(e){e.preventDefault();appData.snags.push({ref:document.getElementById('snRef').value,desc:document.getElementById('snDesc').value,location:document.getElementById('snLocation').value,priority:document.getElementById('snPriority').value,trade:document.getElementById('snTrade').value,responsible:document.getElementById('snResponsible').value,status:'Open',date:new Date().toISOString()});save();}
-function closeSnag(i){appData.snags[i].status='Closed';appData.snags[i].closedDate=fmtDate(new Date());save();}
-function addAsBuiltDoc(e){e.preventDefault();appData.asBuiltDocs.push({ref:document.getElementById('abRef').value,title:document.getElementById('abTitle').value,type:document.getElementById('abType').value,format:document.getElementById('abFormat').value,location:document.getElementById('abLocation').value,status:'Draft',date:new Date().toISOString()});save();}
-function generateReport(){
-  var type=document.getElementById('rpType').value,report='';
-  if(type.includes('Progress')){report='=== PROGRESS REPORT ===\nDate: '+fmtDate(new Date())+'\n\n';var snags=appData.snags.length,open=appData.snags.filter(function(s){return s.status==='Open'}).length;report+='Snags: '+snags+' total, '+open+' open\n';report+='Site Days Logged: '+appData.dailyLogs.length+'\n';report+='Tasks: '+appData.programmeTasks.length+' total\n';report+='Building Activities: '+appData.buildingTasks.length+'\n';report+='NCRs: '+appData.ncrRecords.length+' ('+appData.ncrRecords.filter(function(n){return n.status==='Open'}).length+' open)\n';}
-  else if(type.includes('Financial')){report='=== FINANCIAL SUMMARY ===\nDate: '+fmtDate(new Date())+'\n\n';var tc=appData.finances.reduce(function(s,f){return s+(+f.amount||0)},0);var boqTotal=appData.boqItems.reduce(function(s,i){return s+(+i.qty||0)*(+i.rate||0)},0);report+='Total Financed: $'+fmt(tc)+'\n';report+='BOQ Total: $'+fmt(boqTotal)+'\n';report+='POs: '+appData.purchaseOrders.length+' ($'+fmt(appData.purchaseOrders.reduce(function(s,p){return s+(+p.value||0)},0))+')\n';report+='Claimed Amount: $'+fmt(appData.claimsItems.reduce(function(s,c){return s+(+c.amount||0)},0))+'\n';}
-  else if(type.includes('Quality')){report='=== QUALITY REPORT ===\nDate: '+fmtDate(new Date())+'\n\n';report+='NCRs: '+appData.ncrRecords.length+' total\n';report+='Open NCRs: '+appData.ncrRecords.filter(function(n){return n.status==='Open'}).length+'\n';report+='Lab Tests: '+appData.labTests.length+' ('+appData.labTests.filter(function(t){return t.result==='Pass'}).length+' passed)\n';report+='Snags: '+appData.snags.length+' ('+appData.snags.filter(function(s){return s.status==='Closed'}).length+' closed)\n';}
-  else if(type.includes('Safety')){report='=== SAFETY REPORT ===\nDate: '+fmtDate(new Date())+'\n\n';report+='Incidents: '+appData.safetyIncidents.length+' total\n';report+='LTI: '+appData.safetyIncidents.filter(function(s){return s.type==='Lost Time Injury'}).length+'\n';report+='Near Misses: '+appData.safetyIncidents.filter(function(s){return s.type==='Near Miss'}).length+'\n';report+='RIDDOR: 0\n';}
-  else{report='=== CLOSE-OUT REPORT ===\nDate: '+fmtDate(new Date())+'\n\n';report+='Snags: '+appData.snags.length+' ('+appData.snags.filter(function(s){return s.status==='Closed'}).length+' closed)\n';report+='As-Built Docs: '+appData.asBuiltDocs.length+'\n';report+='Claims: '+appData.claimsItems.length+' ('+appData.claimsItems.filter(function(c){return c.status==='Resolved'}).length+' resolved)\n';report+='Total Project Records: '+Object.keys(appData).filter(function(k){return Array.isArray(appData[k])}).reduce(function(s,k){return s+appData[k].length},0)+'\n';}
-  document.getElementById('rpResult').textContent=report;
+function submitForm(e,id){
+  e.preventDefault();
+  var item={};
+  var def=moduleDefs[id];
+  def.fields.forEach(function(f){item[f.id]=document.getElementById(id+'_'+f.id).value;});
+  item.date=new Date().toISOString();
+  if(!appData[id])appData[id]=[];
+  appData[id].push(item);
+  save();
+  notify('✅ Added to '+def.title,'success',id);
 }
-function addClaim(e){e.preventDefault();appData.claimsItems.push({ref:document.getElementById('clRef').value,title:document.getElementById('clTitle').value,type:document.getElementById('clType').value,amount:+document.getElementById('clAmount').value,party:document.getElementById('clParty').value,respondent:document.getElementById('clRespondent').value,details:document.getElementById('clDetails').value,status:'Active',date:new Date().toISOString()});save();}
-// Generic form handlers for phases A-E
-function surveyingForm(e){e.preventDefault();appData.surveys.push({name:document.getElementById('svName').value,east:document.getElementById('svEast')?document.getElementById('svEast').value:'',date:new Date().toISOString()});save();}
-function addSurvey(e){surveyingForm(e);}
-function addSoilTest(e){e.preventDefault();appData.soilTests.push({borehole:document.getElementById('stBorehole').value,depth:document.getElementById('stDepth')?document.getElementById('stDepth').value:'',bearing:document.getElementById('stBearing')?document.getElementById('stBearing').value:'',date:new Date().toISOString()});save();}
-function addGISLayer(e){e.preventDefault();appData.gisLayers.push({name:document.getElementById('gisName').value,date:new Date().toISOString()});save();}
-function addFinance(e){e.preventDefault();appData.finances.push({desc:document.getElementById('finDesc').value,amount:+document.getElementById('finAmt').value,date:new Date().toISOString()});save();}
-function addContract(e){e.preventDefault();appData.contracts.push({name:document.getElementById('ctName').value,value:+document.getElementById('ctValue').value,date:new Date().toISOString()});save();}
-function addApproval(e){e.preventDefault();appData.approvals.push({name:document.getElementById('apName').value,status:'Pending',date:new Date().toISOString()});save();}
-function addBeam(e){e.preventDefault();appData.designBeams.push({name:document.getElementById('bmName').value,span:+document.getElementById('bmSpan').value,load:+document.getElementById('bmLoad').value,date:new Date().toISOString()});save();}
-function addColumn(e){e.preventDefault();appData.designColumns.push({name:document.getElementById('colName').value,axial:+document.getElementById('colAxial').value,date:new Date().toISOString()});save();}
-function addArchNote(e){e.preventDefault();appData.archNotes.push({title:document.getElementById('anTitle').value,date:new Date().toISOString()});save();}
-function addWaterPipe(e){e.preventDefault();appData.waterPipes.push({name:document.getElementById('wpName').value,length:+document.getElementById('wpLength').value,date:new Date().toISOString()});save();}
-function addDrainPipe(e){e.preventDefault();appData.drainPipes.push({name:document.getElementById('dpName').value,length:+document.getElementById('dpLength').value,date:new Date().toISOString()});save();}
-function addCircuit(e){e.preventDefault();appData.electricalCircuits.push({name:document.getElementById('ecName').value,load:+document.getElementById('ecLoad').value,date:new Date().toISOString()});save();}
-function addRoadSection(e){e.preventDefault();appData.transportSections.push({name:document.getElementById('rsName').value,length:+document.getElementById('rsLength').value,date:new Date().toISOString()});save();}
-function addEnvAssess(e){e.preventDefault();appData.envAssessments.push({name:document.getElementById('eaName').value,date:new Date().toISOString()});save();}
-function addTempWork(e){e.preventDefault();appData.tempWorks.push({name:document.getElementById('twName').value,date:new Date().toISOString()});save();}
-function addCADFile(e){e.preventDefault();appData.cadFiles.push({name:document.getElementById('cfName').value,ver:document.getElementById('cfVer').value,date:new Date().toISOString()});save();}
-function addMeasurement(e){e.preventDefault();appData.measurements.push({desc:document.getElementById('msDesc').value,qty:(+document.getElementById('msLength').value||1)*(+document.getElementById('msWidth').value||1)*(+document.getElementById('msHeight').value||1),date:new Date().toISOString()});save();}
-function addMaterial(e){e.preventDefault();appData.materials.push({name:document.getElementById('mtName').value,rate:+document.getElementById('mtRate').value,date:new Date().toISOString()});save();}
-function addBOQItem(e){e.preventDefault();appData.boqItems.push({desc:document.getElementById('bqDesc').value,qty:+document.getElementById('bqQty').value,rate:+document.getElementById('bqRate').value,date:new Date().toISOString()});save();}
-function addEstimate(e){e.preventDefault();var m=+document.getElementById('esMat').value||0,l=+document.getElementById('esLab').value||0;appData.estimates.push({name:document.getElementById('esName').value,totalCost:m+l,date:new Date().toISOString()});save();}
-function addVEItem(e){e.preventDefault();appData.valueItems.push({name:document.getElementById('veName').value,orig:+document.getElementById('veOrig').value,prop:+document.getElementById('veProp').value,date:new Date().toISOString()});save();}
-function addLCCItem(e){e.preventDefault();var c=+document.getElementById('lcCapital').value||0,o=+document.getElementById('lcOM').value||0;appData.lifecycleItems.push({name:document.getElementById('lcName').value,capital:c,om:o,npv:Math.round(c+o*20),date:new Date().toISOString()});save();}
-function addPO(e){e.preventDefault();appData.purchaseOrders.push({number:document.getElementById('poNumber').value,supplier:document.getElementById('poSupplier').value,value:+document.getElementById('poValue').value,status:'Pending',date:new Date().toISOString()});save();}
-function addAwardedContract(e){e.preventDefault();appData.awardedContracts.push({name:document.getElementById('acName').value,contractor:document.getElementById('acContractor').value,value:+document.getElementById('acValue').value,date:new Date().toISOString()});save();}
-function addSupplier(e){e.preventDefault();appData.suppliers.push({name:document.getElementById('spName').value,contact:document.getElementById('spContact').value,phone:document.getElementById('spPhone').value,date:new Date().toISOString()});save();}
-function addPlant(e){e.preventDefault();appData.plantItems.push({name:document.getElementById('plName').value,dailyRate:+document.getElementById('plRate').value,days:+document.getElementById('plDays').value,date:new Date().toISOString()});save();}
-function addCrew(e){e.preventDefault();appData.crewMembers.push({name:document.getElementById('crName').value,role:document.getElementById('crRole').value,dailyRate:+document.getElementById('crRate').value,date:new Date().toISOString()});save();}
-function addDailyLog(e){e.preventDefault();appData.dailyLogs.push({weather:document.getElementById('dlWeather').value,workers:+document.getElementById('dlWorkers').value,hours:+document.getElementById('dlHours').value,desc:document.getElementById('dlDesc').value,date:new Date().toLocaleDateString()});save();}
-function addProgTask(e){e.preventDefault();appData.programmeTasks.push({name:document.getElementById('ptName').value,start:document.getElementById('ptStart').value,end:document.getElementById('ptEnd').value,duration:+document.getElementById('ptDuration').value,priority:document.getElementById('ptPriority').value,status:'Pending',date:new Date().toISOString()});save();}
-function addBldgTask(e){e.preventDefault();appData.buildingTasks.push({name:document.getElementById('btName').value,trade:document.getElementById('btTrade').value,floor:document.getElementById('btFloor').value,qty:document.getElementById('btQty').value,unit:document.getElementById('btUnit').value,status:'Pending',date:new Date().toISOString()});save();}
-function addPileRecord(e){e.preventDefault();appData.pilingRecords.push({ref:document.getElementById('prRef').value,type:document.getElementById('prType').value,dia:+document.getElementById('prDia').value,desLen:document.getElementById('prDesLen').value,achLen:document.getElementById('prAchLen').value,conc:document.getElementById('prConc').value,date:new Date().toISOString()});save();}
-function addLabTest(e){e.preventDefault();appData.labTests.push({ref:document.getElementById('ltRef').value,type:document.getElementById('ltType').value,location:document.getElementById('ltLocation').value,value:document.getElementById('ltValue').value,required:document.getElementById('ltRequired').value,result:document.getElementById('ltResult').value,date:new Date().toISOString()});save();}
-function addIncident(e){e.preventDefault();appData.safetyIncidents.push({desc:document.getElementById('siDesc').value,type:document.getElementById('siType').value,severity:document.getElementById('siSeverity').value,action:document.getElementById('siAction').value,date:new Date().toISOString()});save();}
-function addNCR(e){e.preventDefault();appData.ncrRecords.push({ref:document.getElementById('ncrRef').value,desc:document.getElementById('ncrDesc').value,location:document.getElementById('ncrLocation').value,severity:document.getElementById('ncrSeverity').value,status:'Open',date:new Date().toISOString()});save();}
-function addDocument(e){e.preventDefault();appData.documents.push({ref:document.getElementById('dcRef').value,title:document.getElementById('dcTitle').value,type:document.getElementById('dcType').value,rev:document.getElementById('dcRevision').value,status:'For Review',date:new Date().toISOString()});save();}
-function addDelivery(e){e.preventDefault();appData.siteDeliveries.push({supplier:document.getElementById('sdSupplier').value,materials:document.getElementById('sdMaterials').value,vehicle:document.getElementById('sdVehicle').value,time:document.getElementById('sdTime').value,status:'Received',date:new Date().toISOString()});save();}
-function addCommunication(e){e.preventDefault();appData.communications.push({subject:document.getElementById('scSubject').value,type:document.getElementById('scType').value,with:document.getElementById('scWith').value,notes:document.getElementById('scNotes').value,date:new Date().toISOString()});save();}
+function deleteItem(id,i){
+  if(confirm('Delete this record?')){
+    appData[id].splice(i,1);
+    // Also clean photos
+    var key=id+'_'+i;
+    if(appData.photos[key])delete appData.photos[key];
+    save();
+    notify('🗑️ Record deleted','warning',id);
+  }
+}
+function showPhoto(data){var w=window.open('');w.document.write('<img src="'+data+'" style="max-width:100%">');}
+function exportModulePDF(id,title){
+  var h='<h1>'+title+'</h1><p>Exported: '+new Date().toLocaleString()+'</p><table><tr>';
+  var def=moduleDefs[id];
+  def.fields.forEach(function(f){h+='<th>'+f.label+'</th>';});
+  h+='</tr>';
+  (appData[id]||[]).forEach(function(item){h+='<tr>';def.fields.forEach(function(f){h+='<td>'+(item[f.id]||'')+'</td>';});h+='</tr>';});
+  h+='</table>';
+  exportPDF(title,h);
+}
 
 // ===================== RENDER =====================
+
+// ===================== CALCULATOR FUNCTIONS =====================
+function calcDistance(){var e1=+document.getElementById("sv_p1e").value||0,n1=+document.getElementById("sv_p1n").value||0,e2=+document.getElementById("sv_p2e").value||0,n2=+document.getElementById("sv_p2n").value||0,dE=e2-e1,dN=n2-n1,dist=Math.sqrt(dE*dE+dN*dN),bearing=Math.atan2(dE,dN)*180/Math.PI;if(bearing<0)bearing+=360;document.getElementById("sv_distResult").innerHTML="<b>Distance: "+dist.toFixed(3)+"m</b> | <b>Bearing: "+bearing.toFixed(2)+"°</b>";}
+function recommendFoundation(){var bc=+document.getElementById("gt_bc").value||150,load=+document.getElementById("gt_load").value||500,area=load/bc;document.getElementById("gt_result").innerHTML="<b>Required Area: "+area.toFixed(1)+"m²</b> | Bearing: "+bc+" kPa";}
+function calcCashflow(){var m=+document.getElementById("fin_months").value||12,b=+document.getElementById("fin_budget").value||1e6,h="<b>Monthly: ~$"+fmt(Math.round(b/m))+"</b><br>";for(var i=1;i<=Math.min(m,6);i++)h+="M"+i+": $"+fmt(Math.round(b*Math.sin((i/m)*Math.PI/2)/m))+" | ";document.getElementById("fin_cfResult").innerHTML=h;}
+function calcNPV(){var inv=+document.getElementById("fin_inv").value||0,ret=+document.getElementById("fin_ret").value||0,y=+document.getElementById("fin_years").value||5,r=(+document.getElementById("fin_rate").value||8)/100,npv=-inv;for(var i=1;i<=y;i++)npv+=ret/Math.pow(1+r,i);var roi=inv>0?((ret*y-inv)/inv*100):0;document.getElementById("fin_npvResult").innerHTML="<b>NPV: $"+fmt(Math.round(npv))+"</b> | <b>ROI: "+roi.toFixed(1)+"%</b>";}
+function checkBeam(){var L=+document.getElementById("st_span").value||5,w=+document.getElementById("st_udl").value||25,b=+document.getElementById("st_b").value||300,d=+document.getElementById("st_d").value||600,M=w*L*L/8,sigma=M*1e6/(0.9*d*b);document.getElementById("st_beamResult").innerHTML="<b>Mmax: "+M.toFixed(1)+" kNm</b> | σ: "+sigma.toFixed(1)+" MPa | "+(sigma<20?"OK":"CHECK");}
+function checkColumn(){var N=+document.getElementById("st_colN").value||800,b=+document.getElementById("st_colB").value||300,d=+document.getElementById("st_colD").value||300,stress=N*1000/(b*d);document.getElementById("st_colResult").innerHTML="<b>Stress: "+stress.toFixed(2)+" MPa</b> | "+(stress<20?"OK":"CHECK section");}
+function sizePipe(){var Q=+document.getElementById("ws_flow").value||0.5,dia=Math.sqrt(4*Q/(Math.PI*1.5))*1000,sizes=[15,22,28,35,42,54,67,76,108],sel=sizes.find(function(s){return s>=dia;})||108;document.getElementById("ws_pipeResult").innerHTML="<b>Required Ø: "+dia.toFixed(0)+"mm</b> | Select: "+sel+"mm";}
+function sizeTank(){var o=+document.getElementById("ws_occ").value||10,l=+document.getElementById("ws_lpd").value||150;document.getElementById("ws_tankResult").innerHTML="<b>Daily Demand: "+o*l+"L</b> | Tank: "+Math.round(o*l*0.5)+"L";}
+function sizeCable(){var kW=+document.getElementById("el_power").value||5,V=+document.getElementById("el_volt").value||230,I=kW*1000/V,s=I<=16?"1.5":I<=27?"2.5":I<=37?"4":I<=47?"6":I<=65?"10":"16";document.getElementById("el_cableResult").innerHTML="<b>Current: "+I.toFixed(1)+"A</b> | Cable: "+s+"mm²";}
+function estimateMix(){var f=+document.getElementById("lab_target").value||30,wc=+document.getElementById("lab_wc").value||0.5,c=Math.round(250+f*3),w=Math.round(c*wc),fa=Math.round(700-f*2),ca=Math.round(1100-f*3);document.getElementById("lab_mixResult").innerHTML="<b>Cement: "+c+"kg/m³</b> | Water: "+w+"L | FA: "+fa+"kg | CA: "+ca+"kg";}
+
+
+// ===================== PHASE A TOOLS (remaining) =====================
+function calcArea(){var pts=document.getElementById("gis_points").value.split("\n").filter(function(l){return l.trim();});if(pts.length<3){document.getElementById("gis_areaResult").innerHTML="Enter 3+ coordinate pairs (E,N per line)";return;}var area=0;for(var i=0;i<pts.length;i++){var p1=pts[i].split(",").map(Number),p2=pts[(i+1)%pts.length].split(",").map(Number);area+=p1[0]*p2[1]-p2[0]*p1[1];}area=Math.abs(area/2);document.getElementById("gis_areaResult").innerHTML="<b>Area: "+area.toFixed(2)+" m²</b> | "+(area/10000).toFixed(4)+" ha";}
+function trackDeadlines(){var n=document.getElementById("ct_notice").value||"Contract",d=+document.getElementById("ct_days").value||28;var due=new Date();due.setDate(due.getDate()+d);document.getElementById("ct_deadlineResult").innerHTML="<b>Notice: "+n+"</b><br>Due Date: <b>"+due.toLocaleDateString()+"</b><br>Days remaining: <b>"+d+"</b>";}
+function calcRunoff(){var A=+document.getElementById("dr_area").value||500,i=+document.getElementById("dr_intensity").value||50,c=+document.getElementById("dr_coeff").value||0.9;var Q=(A*i*c/3600).toFixed(2);var dia=Math.ceil(Math.sqrt(Q)*35);document.getElementById("dr_runoffResult").innerHTML="<b>Runoff: "+Q+" L/s</b> | Pipe Ø: ~"+dia+"mm | Area: "+A+"m²";}
+function calcPavement(){var cbr=+document.getElementById("tp_cbr").value||5,msa=+document.getElementById("tp_msa").value||10;var base=Math.max(150,400-Math.sqrt(cbr)*60),binder=Math.min(100,40+msa*3),surface=40;document.getElementById("tp_paveResult").innerHTML="Surface: "+surface+"mm | Binder: "+Math.round(binder)+"mm | Base: "+Math.round(base)+"mm | <b>Total: "+Math.round(surface+binder+base)+"mm</b>";}
+function calcCarbon(){var conc=+document.getElementById("ev_conc").value||0,steel=+document.getElementById("ev_steel").value||0;document.getElementById("ev_carbonResult").innerHTML="<b>Embodied Carbon: "+fmt(conc*350+steel*1850)+" kgCO₂e</b> | Concrete: "+fmt(conc*350)+"kg | Steel: "+fmt(steel*1850)+"kg";}
+function calcTempLoad(){var h=+document.getElementById("tw_height").value||3,q=+document.getElementById("tw_pressure").value||60;var P=h*q*1.5;document.getElementById("tw_loadResult").innerHTML="<b>Design Pressure: "+P.toFixed(1)+" kN/m²</b> | Height: "+h+"m | Concrete pressure: "+q+" kN/m²";}
+function calcBulkDensity(){var w=+document.getElementById("mt_weight").value||0,v=+document.getElementById("mt_volume").value||1;var d=w/v;document.getElementById("mt_densityResult").innerHTML="<b>Density: "+d.toFixed(0)+" kg/m³</b> | Weight: "+w+"kg | Volume: "+v+"m³";}
+function calcBuildUpRate(){var g=+document.getElementById("es_gang").value||2,h=+document.getElementById("es_hours").value||8,r=+document.getElementById("es_rate").value||35,o=+document.getElementById("es_output").value||10;var daily=g*h*r,unit=daily/o;document.getElementById("es_buildupResult").innerHTML="<b>Daily Cost: $"+fmt(daily)+"</b> | <b>Unit Rate: $"+unit.toFixed(2)+"/unit</b> | "+ (g*h/o).toFixed(2)+" hrs/unit";}
+function calcVE(){var orig=+document.getElementById("ve_orig").value||0,prop=+document.getElementById("ve_prop").value||0;var saving=orig-prop,pctSaving=orig>0?(saving/orig*100):0;document.getElementById("ve_result").innerHTML="<b>Saving: $"+fmt(saving)+" ("+pctSaving.toFixed(1)+"%)</b> | Original: $"+fmt(orig)+" | Proposed: $"+fmt(prop);}
+function calcLCC(){var cap=+document.getElementById("lc_capital").value||0,om=+document.getElementById("lc_om").value||0,life=+document.getElementById("lc_life").value||30,rate=(+document.getElementById("lc_rate").value||5)/100;var npvOM=0;for(var i=1;i<=life;i++)npvOM+=om/Math.pow(1+rate,i);document.getElementById("lc_lccResult").innerHTML="<b>Capital: $"+fmt(cap)+"</b> | <b>O&M NPV: $"+fmt(Math.round(npvOM))+"</b> | <b>Total LCC: $"+fmt(Math.round(cap+npvOM))+"</b> | Annual equiv: $"+fmt(Math.round((cap+npvOM)/life))+"/yr";}
+function calcLeadTime(){var d=+document.getElementById("pr_lead").value||14;var now=new Date(),arrive=new Date();arrive.setDate(now.getDate()+d);document.getElementById("pr_leadResult").innerHTML="<b>Order by: "+now.toLocaleDateString()+"</b><br>Expected arrival: <b>"+arrive.toLocaleDateString()+"</b><br>Lead time: <b>"+d+" days</b>";}
+function calcTenderScore(){var p=+document.getElementById("aw_price").value||0,q=+document.getElementById("aw_quality").value||0,t=+document.getElementById("aw_time").value||0;var total=p+q+t;document.getElementById("aw_tenderResult").innerHTML=total===100?"<b style=\"color:#34d399\">✓ Weights valid ("+total+"%)</b>":"<b style=\"color:#f87171\">✗ Weights = "+total+"% (need 100%)</b>";}
+function calcUtilization(){var used=+document.getElementById("pl_used").value||0,avail=+document.getElementById("pl_avail").value||8;var rate=avail>0?(used/avail*100):0;document.getElementById("pl_utilResult").innerHTML="<b>Utilization: "+rate.toFixed(0)+"%</b> | Used: "+used+"hrs | Available: "+avail+"hrs | "+(rate>80?"<span class=\"tag r\">HIGH</span>":"<span class=\"tag g\">OK</span>");}
+function calcAFR(){var incidents=+document.getElementById("hs_incidents").value||0,hours=+document.getElementById("hs_hours").value||100000;var afr=hours>0?(incidents*100000/hours):0;document.getElementById("hs_afrResult").innerHTML="<b>AFR: "+afr.toFixed(1)+"</b> per 100,000 hrs | Incidents: "+incidents+" | Hours: "+fmt(hours);}
+function calcWarranty(){var d=document.getElementById("ab_warranty").value;var now=new Date(),exp=new Date(d);var daysLeft=Math.ceil((exp-now)/(86400000));document.getElementById("ab_warrantyResult").innerHTML=daysLeft>0?"<b>"+daysLeft+" days remaining</b> | Expires: "+exp.toLocaleDateString():"<b style=\"color:#f87171\">EXPIRED</b> | Expired: "+exp.toLocaleDateString();}
+function calcClaimEntitlement(){var delay=+document.getElementById("cl_delay").value||0,cost=+document.getElementById("cl_cost").value||0;var eot=Math.ceil(delay/7)*7;document.getElementById("cl_entitleResult").innerHTML="<b>EOT: "+eot+" days ("+Math.ceil(eot/7)+" weeks)</b> | <b>Cost: $"+fmt(cost)+"</b> | "+(delay>0?"<span class=\"tag y\">Entitlement likely</span>":"<span class=\"tag g\">No delay</span>");}
+
 function render(){
   var p=getPath();
-  var h='<button class="hamburger" onclick="toggleSB()">'+(sidebarOpen?'✕':'☰')+'</button>';
+  var h='';
+  // Offline indicator
+  h+='<div class="offline-bar'+(navigator.onLine?'':' show')+'" id="offlineBar">⚠️ Offline - Changes saved locally</div>';
+  // Notification badge
+  var unread=appData.notifications.filter(function(n){return !n.read;}).length;
+  h+='<div class="notif-badge" id="notifBadge" style="display:'+(unread>0?'block':'none')+'" onclick="toggleNotifications()">'+unread+'</div>';
+  h+='<div class="notif-panel" id="notifPanel"></div>';
+  // Hamburger
+  h+='<button class="hamburger" onclick="toggleSB()">'+(sidebarOpen?'✕':'☰')+'</button>';
   h+='<div class="overlay'+(sidebarOpen?' show':'')+'" onclick="closeSB()"></div>';
-  h+='<div class="sb'+(sidebarOpen?'':' closed')+'"><div class="sbh" onclick="nav(\'/\')">🏗️ Constructor</div>';
+  // Sidebar
+  h+='<div class="sb'+(sidebarOpen?'':' closed')+'"><div class="sbh" onclick="nav(\'/\')">🏗️ Constructor Pro</div>';
   phases.forEach(function(ph,i){
     h+='<div class="ph" onclick="togglePhase('+i+')">'+ph.name+' ('+ph.items.length+')</div>';
     if(openPhase===i)ph.items.forEach(function(it){h+='<a class="nl'+(p==='/'+it.id?' ac':'')+'" href="#/'+it.id+'" onclick="nav(\'/'+it.id+'\')">'+it.emoji+' '+it.title+'</a>';});
   });
-  h+='</div><div class="mn">';
+  h+='</div>';
+  // Main content
+  h+='<div class="mn">';
   if(p==='/'){
     var t=phases.reduce(function(s,ph){return s+ph.items.length},0);
-    h+='<h1>🏗️ CONSTRUCTOR SUPER APP</h1><p class="sub">'+t+' Modules · 6 Phases · Complete Project Lifecycle</p><div class="gr">';
+    var totalRecords=Object.keys(appData).filter(function(k){return Array.isArray(appData[k])}).reduce(function(s,k){return s+appData[k].length},0);
+    h+='<h1>🏗️ CONSTRUCTOR PRO</h1><p class="sub">'+t+' Modules · '+totalRecords+' Records · Offline-Ready</p>';
+    // Quick stat cards
+    h+='<div class="gr3"><div class="cd" style="text-align:center"><h2 style="color:#60a5fa">'+totalRecords+'</h2><p style="font-size:10px;color:#9ca3af">Records</p></div><div class="cd" style="text-align:center"><h2 style="color:#34d399">'+appData.photos&&Object.keys(appData.photos).length||0+'</h2><p style="font-size:10px;color:#9ca3af">Photos</p></div><div class="cd" style="text-align:center"><h2 style="color:#fbbf24">'+appData.snags.filter(function(s){return s.status==='Open'}).length+'</h2><p style="font-size:10px;color:#9ca3af">Open Snags</p></div></div>';
+    h+='<div class="gr">';
     phases.forEach(function(ph){h+='<div class="cd"><h3>'+ph.name+' ('+ph.items.length+')</h3>';ph.items.forEach(function(it){h+='<a class="itm" href="#/'+it.id+'" onclick="nav(\'/'+it.id+'\')">'+it.emoji+' '+it.title+'</a>';});h+='</div>';});
     h+='</div>';
-  }else{var id=p.replace('/','');if(pages[id])h+=pages[id]();else h+='<h1>404</h1><a href="#/" onclick="nav(\'/\')" style="color:#60a5fa">← Back</a>';}
-  h+='</div>';document.getElementById('root').innerHTML=h;
+  }else{
+    var id=p.replace('/','');
+    if(pages[id])h+=pages[id]();
+    else h+='<h1>404</h1><a href="#/" onclick="nav(\'/\')" style="color:#60a5fa">← Back</a>';
+  }
+  h+='</div>';
+  document.getElementById('root').innerHTML=h;
+  updateBadge();
 }
 render();
 </script>
 </body>
 </html>
+<script>
+// Fix: Make buttons and inputs mobile-friendly
+document.addEventListener('DOMContentLoaded', function() {
+  var style = document.createElement('style');
+  style.textContent = `
+    @media (max-width: 400px) {
+      .row { flex-direction: column; gap: 4px; }
+      .row .col { min-width: 100%; }
+      .bt2 { font-size: 12px; padding: 8px 12px; }
+      .inp, .inp2, .sel { font-size: 16px !important; padding: 10px !important; }
+      .mn { padding: 12px 8px !important; }
+      .cd { padding: 12px !important; }
+      h1 { font-size: 18px !important; }
+      table { font-size: 10px !important; }
+      th, td { padding: 4px 2px !important; }
+      .gr2, .gr3 { grid-template-columns: repeat(2,1fr) !important; gap: 4px !important; }
+      .photo-thumb { width: 40px; height: 40px; }
+      .hamburger { top: 6px; left: 6px; width: 34px; height: 34px; font-size: 18px; }
+      .notif-badge { top: 6px; right: 6px; font-size: 10px; padding: 2px 8px; }
+    }
+  `;
+  document.head.appendChild(style);
+});
+</script>
