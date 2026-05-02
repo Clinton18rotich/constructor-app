@@ -1,0 +1,10 @@
+{
+  "name": "Constructor Super App",
+  "short_name": "Constructor",
+  "description": "40-module construction management",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#1f2937",
+  "icons": [{"src": "/icon.svg","sizes": "512x512","type": "image/svg+xml","purpose": "any maskable"}]
+}
