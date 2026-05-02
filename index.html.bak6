@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
 <title>Constructor Super App Pro</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -154,7 +154,7 @@ window.addEventListener('offline',function(){document.getElementById('offlineBar
 function exportPDF(title,content){
   try{
     var win=window.open('','_blank','width=800,height=600');
-    win.document.write('<html><head><link rel="icon" type="image/svg+xml" href="icon.svg">
+    win.document.write('<html><head><link rel="icon" type="image/svg+xml" href="/icon.svg">
 <title>'+title+'</title><style>body{font-family:sans-serif;padding:20px;color:#111}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ddd;padding:8px;text-align:left}th{background:#f3f4f6}h1{font-size:18px}h2{font-size:14px}</style></head><body>'+content+'</body></html>');
     win.document.close();
     setTimeout(function(){win.print();},500);
