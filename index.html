@@ -1,4 +1,3 @@
-<!-- v2.0 - Enhanced with calculators -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +21,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;o
 /* Main content */
 .mn{flex:1;overflow-y:auto;padding:16px;height:100vh;-webkit-overflow-scrolling:touch}
 /* Cards */
-.cd{background:#1f2937;overflow-x:auto;max-width:100%;border-radius:14px;padding:16px;margin-bottom:12px}
+.cd{background:#1f2937;border-radius:14px;padding:16px;margin-bottom:12px}
 .gr{display:grid;grid-template-columns:1fr;gap:12px}
 .gr2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .gr3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
@@ -58,8 +57,8 @@ p.sub{color:#9ca3af;font-size:13px;margin-bottom:16px}
 .progress-bar{height:8px;background:#374151;border-radius:9999px;overflow:hidden;margin-top:4px}
 .progress-fill{height:100%;border-radius:9999px}
 /* Photos */
-.photo-thumb{width:40px;height:40px;min-width:40px;object-fit:cover;border-radius:8px;object-fit:cover;border:2px solid #374151;cursor:pointer;margin:4px}
-.photo-grid{display:flex;flex-wrap:wrap;gap:2px;margin-top:4px;max-width:100%;overflow-x:auto}
+.photo-thumb{width:60px;height:60px;border-radius:8px;object-fit:cover;border:2px solid #374151;cursor:pointer;margin:4px}
+.photo-grid{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
 /* Notifications */
 .notif-badge{position:fixed;top:10px;right:10px;z-index:60;background:#dc2626;color:white;border-radius:9999px;padding:4px 10px;font-size:12px;font-weight:bold;cursor:pointer}
 .notif-panel{position:fixed;top:50px;right:10px;z-index:60;background:#1f2937;border:1px solid #374151;border-radius:14px;width:300px;max-height:400px;overflow-y:auto;display:none;padding:8px}
@@ -78,7 +77,6 @@ p.sub{color:#9ca3af;font-size:13px;margin-bottom:16px}
 /* Modal */
 .modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:80;display:flex;align-items:center;justify-content:center}
 .modal-inner{background:#1f2937;border-radius:14px;padding:20px;max-width:90vw;max-height:80vh;overflow-y:auto}
-.btn-row{display:flex;gap:6px;flex-wrap:nowrap}.btn-row .bt2{flex:1;min-width:0;font-size:12px;padding:10px 6px;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -127,23 +125,20 @@ function toggleNotifications(){
 
 // ===================== PHOTO CAPTURE =====================
 function capturePhoto(moduleId,itemIndex){
-  var input=document.createElement("input");
-  input.type="file";input.accept="image/*";input.capture="environment";
+  var input=document.createElement('input');
+  input.type='file';
+  input.accept='image/*';
+  input.capture='environment';
   input.onchange=function(e){
-    var file=e.target.files[0];if(!file)return;
-    if(file.size>500000){notify("Photo too large. Max 500KB","warning");return;}
+    var file=e.target.files[0];
+    if(!file)return;
     var reader=new FileReader();
     reader.onload=function(ev){
-      var key=moduleId+"_"+itemIndex;
+      var key=moduleId+'_'+itemIndex;
       if(!appData.photos[key])appData.photos[key]=[];
-      if(appData.photos[key].length>=5){notify("Max 5 photos per item","warning");return;}
       appData.photos[key].push({data:ev.target.result,time:new Date().toISOString()});
-      save();notify("📸 Photo captured","success",moduleId);
-    };
-    reader.readAsDataURL(file);
-  };
-  input.click();
-}
+      save();
+      notify('📸 Photo captured','success',moduleId);
     };
     reader.readAsDataURL(file);
   };
@@ -158,8 +153,7 @@ window.addEventListener('offline',function(){document.getElementById('offlineBar
 function exportPDF(title,content){
   try{
     var win=window.open('','_blank','width=800,height=600');
-    win.document.write('<html><head><title>'+title+'</title><style>body{font-family:sans-serif;padding:20px;color:#111}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ddd;padding:8px;text-align:left}th{background:#f3f4f6}h1{font-size:18px}h2{font-size:14px}.btn-row{display:flex;gap:6px;flex-wrap:nowrap}.btn-row .bt2{flex:1;min-width:0;font-size:12px;padding:10px 6px;white-space:nowrap}
-</style></head><body>'+content+'</body></html>');
+    win.document.write('<html><head><title>'+title+'</title><style>body{font-family:sans-serif;padding:20px;color:#111}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ddd;padding:8px;text-align:left}th{background:#f3f4f6}h1{font-size:18px}h2{font-size:14px}</style></head><body>'+content+'</body></html>');
     win.document.close();
     setTimeout(function(){win.print();},500);
   }catch(e){
@@ -193,20 +187,6 @@ var pages={};
 var forms={};
 
 // Helper to create form pages
-
-// Returns calculator HTML for enhanced modules
-function getModuleTools(id){
-  var tools = {
-    surveying: '<div class="cd"><h4>📐 Distance & Bearing Calculator</h4><div class="row"><div class="col"><label class="lbl">Point 1 Easting</label><input class="inp" id="sv_p1e" type="number" step="0.001" placeholder="E1"></div><div class="col"><label class="lbl">Point 1 Northing</label><input class="inp" id="sv_p1n" type="number" step="0.001" placeholder="N1"></div></div><div class="row"><div class="col"><label class="lbl">Point 2 Easting</label><input class="inp" id="sv_p2e" type="number" step="0.001" placeholder="E2"></div><div class="col"><label class="lbl">Point 2 Northing</label><input class="inp" id="sv_p2n" type="number" step="0.001" placeholder="N2"></div></div><button class="bt2" style="background:#7c3aed;color:white" onclick="calcDistance()">Calculate Distance & Bearing</button><div id="sv_distResult" style="margin-top:8px;padding:10px;background:#111827;border-radius:8px;font-size:12px;color:#9ca3af">Enter coordinates</div></div>',
-    geotechnical: '<div class="cd"><h4>🏗️ Foundation Recommendation</h4><div class="row"><div class="col"><label class="lbl">Bearing Capacity (kPa)</label><input class="inp" id="gt_bc" type="number" value="150"></div><div class="col"><label class="lbl">Building Load (kN)</label><input class="inp" id="gt_load" type="number" value="500"></div></div><button class="bt2" style="background:#059669;color:white" onclick="recommendFoundation()">Get Recommendation</button><div id="gt_result" style="margin-top:8px;padding:10px;background:#111827;border-radius:8px;font-size:12px;color:#9ca3af">Enter parameters</div></div>',
-    finance: '<div class="cd"><h4>📈 Cashflow Forecast</h4><div class="row"><div class="col"><label class="lbl">Duration (months)</label><input class="inp" id="fin_months" type="number" value="12"></div><div class="col"><label class="lbl">Budget ($)</label><input class="inp" id="fin_budget" type="number" value="1000000"></div></div><button class="bt2" style="background:#7c3aed;color:white" onclick="calcCashflow()">Generate Cashflow</button><div id="fin_cfResult" style="margin-top:8px;padding:10px;background:#111827;border-radius:8px;font-size:11px;color:#9ca3af">Enter values</div></div><div class="cd"><h4>💵 NPV Calculator</h4><div class="row"><div class="col"><label class="lbl">Investment ($)</label><input class="inp" id="fin_inv" type="number" value="100000"></div><div class="col"><label class="lbl">Annual Return ($)</label><input class="inp" id="fin_ret" type="number" value="25000"></div></div><div class="row"><div class="col"><label class="lbl">Years</label><input class="inp" id="fin_years" type="number" value="5"></div><div class="col"><label class="lbl">Discount Rate %</label><input class="inp" id="fin_rate" type="number" value="8"></div></div><button class="bt2" style="background:#059669;color:white" onclick="calcNPV()">Calculate NPV & IRR</button><div id="fin_npvResult" style="margin-top:8px;padding:10px;background:#111827;border-radius:8px;font-size:12px;color:#9ca3af">Enter values</div></div>',
-    structures: '<div class="cd"><h4>🔩 Quick Beam Check (EC2)</h4><div class="row"><div class="col"><label class="lbl">Span (m)</label><input class="inp" id="st_span" type="number" value="5"></div><div class="col"><label class="lbl">UDL (kN/m)</label><input class="inp" id="st_udl" type="number" value="25"></div></div><div class="row"><div class="col"><label class="lbl">Width (mm)</label><input class="inp" id="st_b" type="number" value="300"></div><div class="col"><label class="lbl">Depth (mm)</label><input class="inp" id="st_d" type="number" value="600"></div></div><button class="bt2" style="background:#2563eb;color:white" onclick="checkBeam()">Check Beam</button><div id="st_beamResult" style="margin-top:8px;padding:10px;background:#111827;border-radius:8px;font-size:12px;color:#9ca3af">Enter dimensions</div></div><div class="cd"><h4>🏛️ Column Capacity Check</h4><div class="row"><div class="col"><label class="lbl">Axial Load (kN)</label><input class="inp" id="st_colN" type="number" value="800"></div><div class="col"><label class="lbl">Width (mm)</label><input class="inp" id="st_colB" type="number" value="300"></div><div class="col"><label class="lbl">Depth (mm)</label><input class="inp" id="st_colD" type="number" value="300"></div></div><button class="bt2" style="background:#7c3aed;color:white" onclick="checkColumn()">Check Column</button><div id="st_colResult" style="margin-top:8px;padding:10px;background:#111827;border-radius:8px;font-size:12px;color:#9ca3af">Enter values</div></div>',
-    water: '<div class="cd"><h4>💧 Pipe Sizing (BS 6700)</h4><div class="row"><div class="col"><label class="lbl">Flow Rate (L/s)</label><input class="inp" id="ws_flow" type="number" value="0.5" step="0.1"></div><div class="col"><label class="lbl">Material</label><select class="sel" id="ws_mat"><option>Copper</option><option>HDPE</option><option>Steel</option></select></div></div><button class="bt2" style="background:#059669;color:white" onclick="sizePipe()">Calculate Pipe Size</button><div id="ws_pipeResult" style="margin-top:8px;padding:10px;background:#111827;border-radius:8px;font-size:12px;color:#9ca3af">Enter flow rate</div></div><div class="cd"><h4>🚰 Storage Tank Sizing</h4><div class="row"><div class="col"><label class="lbl">Occupants</label><input class="inp" id="ws_occ" type="number" value="10"></div><div class="col"><label class="lbl">Liters/person/day</label><input class="inp" id="ws_lpd" type="number" value="150"></div></div><button class="bt2" style="background:#2563eb;color:white" onclick="sizeTank()">Calculate Tank Size</button><div id="ws_tankResult" style="margin-top:8px;padding:10px;background:#111827;border-radius:8px;font-size:12px;color:#9ca3af">Enter values</div></div>',
-    electrical: '<div class="cd"><h4>⚡ Cable Sizing (BS 7671)</h4><div class="row"><div class="col"><label class="lbl">Power (kW)</label><input class="inp" id="el_power" type="number" value="5"></div><div class="col"><label class="lbl">Voltage (V)</label><input class="inp" id="el_volt" type="number" value="230"></div></div><div class="row"><div class="col"><label class="lbl">Cable Length (m)</label><input class="inp" id="el_len" type="number" value="30"></div><div class="col"><label class="lbl">Method</label><select class="sel" id="el_method"><option>Clipped Direct</option><option>In Conduit</option><option>Buried</option></select></div></div><button class="bt2" style="background:#f59e0b;color:#111827" onclick="sizeCable()">Calculate Cable Size</button><div id="el_cableResult" style="margin-top:8px;padding:10px;background:#111827;border-radius:8px;font-size:12px;color:#9ca3af">Enter parameters</div></div>',
-    lab: '<div class="cd"><h4>🧪 Concrete Mix Estimator</h4><div class="row"><div class="col"><label class="lbl">Target Strength (N/mm²)</label><input class="inp" id="lab_target" type="number" value="30"></div><div class="col"><label class="lbl">W/C Ratio</label><input class="inp" id="lab_wc" type="number" value="0.5" step="0.01"></div></div><button class="bt2" style="background:#7c3aed;color:white" onclick="estimateMix()">Estimate Mix Proportions</button><div id="lab_mixResult" style="margin-top:8px;padding:10px;background:#111827;border-radius:8px;font-size:12px;color:#9ca3af">Enter target strength</div></div>',
-  };
-  return tools[id] || "";
-}
 function makeForm(id,title,emoji,phase,fields,actions){
   pages[id]=function(){
     var h=emoji+'<h1>'+title+'</h1><p class="sub">'+phase+' Phase</p>';
@@ -214,9 +194,6 @@ function makeForm(id,title,emoji,phase,fields,actions){
     if(appData[id]&&appData[id].length){
       h+='<div class="gr2"><div class="cd" style="text-align:center"><h2 style="color:#60a5fa">'+appData[id].length+'</h2><p style="font-size:10px;color:#9ca3af">Records</p></div></div>';
     }
-    // Module-specific tools (calculators)
-    var toolsHTML = getModuleTools(id);
-    if(toolsHTML) h += toolsHTML;
     // Add form
     h+='<div class="cd"><h4>+ Add New</h4><form onsubmit="submitForm(event,\''+id+'\')">';
     fields.forEach(function(f){
@@ -230,7 +207,7 @@ function makeForm(id,title,emoji,phase,fields,actions){
         h+='<input class="inp" id="'+id+'_'+f.id+'" placeholder="'+f.label+'"'+(f.inputType?' type="'+f.inputType+'"':'')+(f.step?' step="'+f.step+'"':'')+'>';
       }
     });
-    h+='<div class="btn-row"><button type="submit" class="bt2" style="background:#2563eb;color:white;flex:1">+ Add</button>';
+    h+='<div class="row"><button type="submit" class="bt2" style="background:#2563eb;color:white;flex:1">+ Add</button>';
     h+='<button type="button" class="bt2" style="background:#059669;color:white;flex:1" onclick="exportModulePDF(\''+id+'\',\''+title+'\')">📄 Export PDF</button></div>';
     h+='</form></div>';
     // Data table
@@ -249,7 +226,7 @@ function makeForm(id,title,emoji,phase,fields,actions){
         // Show photos if any
         if(appData.photos[key]&&appData.photos[key].length){
           h+='<tr><td colspan="'+(fields.length+2)+'"><div class="photo-grid">';
-          appData.photos[key].forEach(function(p){h+='<img src="'+p.data+'" class="photo-thumb" style="width:36px;height:36px" onclick="showPhoto(\''+p.data+'\')">';});
+          appData.photos[key].forEach(function(p){h+='<img src="'+p.data+'" class="photo-thumb" onclick="showPhoto(\''+p.data+'\')">';});
           h+='</div></td></tr>';
         }
       });
@@ -372,38 +349,6 @@ function exportModulePDF(id,title){
 }
 
 // ===================== RENDER =====================
-
-// ===================== CALCULATOR FUNCTIONS =====================
-function calcDistance(){var e1=+document.getElementById("sv_p1e").value||0,n1=+document.getElementById("sv_p1n").value||0,e2=+document.getElementById("sv_p2e").value||0,n2=+document.getElementById("sv_p2n").value||0,dE=e2-e1,dN=n2-n1,dist=Math.sqrt(dE*dE+dN*dN),bearing=Math.atan2(dE,dN)*180/Math.PI;if(bearing<0)bearing+=360;document.getElementById("sv_distResult").innerHTML="<b>Distance: "+dist.toFixed(3)+"m</b> | <b>Bearing: "+bearing.toFixed(2)+"°</b>";}
-function recommendFoundation(){var bc=+document.getElementById("gt_bc").value||150,load=+document.getElementById("gt_load").value||500,area=load/bc;document.getElementById("gt_result").innerHTML="<b>Required Area: "+area.toFixed(1)+"m²</b> | Bearing: "+bc+" kPa";}
-function calcCashflow(){var m=+document.getElementById("fin_months").value||12,b=+document.getElementById("fin_budget").value||1e6,h="<b>Monthly: ~$"+fmt(Math.round(b/m))+"</b><br>";for(var i=1;i<=Math.min(m,6);i++)h+="M"+i+": $"+fmt(Math.round(b*Math.sin((i/m)*Math.PI/2)/m))+" | ";document.getElementById("fin_cfResult").innerHTML=h;}
-function calcNPV(){var inv=+document.getElementById("fin_inv").value||0,ret=+document.getElementById("fin_ret").value||0,y=+document.getElementById("fin_years").value||5,r=(+document.getElementById("fin_rate").value||8)/100,npv=-inv;for(var i=1;i<=y;i++)npv+=ret/Math.pow(1+r,i);var roi=inv>0?((ret*y-inv)/inv*100):0;document.getElementById("fin_npvResult").innerHTML="<b>NPV: $"+fmt(Math.round(npv))+"</b> | <b>ROI: "+roi.toFixed(1)+"%</b>";}
-function checkBeam(){var L=+document.getElementById("st_span").value||5,w=+document.getElementById("st_udl").value||25,b=+document.getElementById("st_b").value||300,d=+document.getElementById("st_d").value||600,M=w*L*L/8,sigma=M*1e6/(0.9*d*b);document.getElementById("st_beamResult").innerHTML="<b>Mmax: "+M.toFixed(1)+" kNm</b> | σ: "+sigma.toFixed(1)+" MPa | "+(sigma<20?"OK":"CHECK");}
-function checkColumn(){var N=+document.getElementById("st_colN").value||800,b=+document.getElementById("st_colB").value||300,d=+document.getElementById("st_colD").value||300,stress=N*1000/(b*d);document.getElementById("st_colResult").innerHTML="<b>Stress: "+stress.toFixed(2)+" MPa</b> | "+(stress<20?"OK":"CHECK section");}
-function sizePipe(){var Q=+document.getElementById("ws_flow").value||0.5,dia=Math.sqrt(4*Q/(Math.PI*1.5))*1000,sizes=[15,22,28,35,42,54,67,76,108],sel=sizes.find(function(s){return s>=dia;})||108;document.getElementById("ws_pipeResult").innerHTML="<b>Required Ø: "+dia.toFixed(0)+"mm</b> | Select: "+sel+"mm";}
-function sizeTank(){var o=+document.getElementById("ws_occ").value||10,l=+document.getElementById("ws_lpd").value||150;document.getElementById("ws_tankResult").innerHTML="<b>Daily Demand: "+o*l+"L</b> | Tank: "+Math.round(o*l*0.5)+"L";}
-function sizeCable(){var kW=+document.getElementById("el_power").value||5,V=+document.getElementById("el_volt").value||230,I=kW*1000/V,s=I<=16?"1.5":I<=27?"2.5":I<=37?"4":I<=47?"6":I<=65?"10":"16";document.getElementById("el_cableResult").innerHTML="<b>Current: "+I.toFixed(1)+"A</b> | Cable: "+s+"mm²";}
-function estimateMix(){var f=+document.getElementById("lab_target").value||30,wc=+document.getElementById("lab_wc").value||0.5,c=Math.round(250+f*3),w=Math.round(c*wc),fa=Math.round(700-f*2),ca=Math.round(1100-f*3);document.getElementById("lab_mixResult").innerHTML="<b>Cement: "+c+"kg/m³</b> | Water: "+w+"L | FA: "+fa+"kg | CA: "+ca+"kg";}
-
-
-// ===================== PHASE A TOOLS (remaining) =====================
-function calcArea(){var pts=document.getElementById("gis_points").value.split("\n").filter(function(l){return l.trim();});if(pts.length<3){document.getElementById("gis_areaResult").innerHTML="Enter 3+ coordinate pairs (E,N per line)";return;}var area=0;for(var i=0;i<pts.length;i++){var p1=pts[i].split(",").map(Number),p2=pts[(i+1)%pts.length].split(",").map(Number);area+=p1[0]*p2[1]-p2[0]*p1[1];}area=Math.abs(area/2);document.getElementById("gis_areaResult").innerHTML="<b>Area: "+area.toFixed(2)+" m²</b> | "+(area/10000).toFixed(4)+" ha";}
-function trackDeadlines(){var n=document.getElementById("ct_notice").value||"Contract",d=+document.getElementById("ct_days").value||28;var due=new Date();due.setDate(due.getDate()+d);document.getElementById("ct_deadlineResult").innerHTML="<b>Notice: "+n+"</b><br>Due Date: <b>"+due.toLocaleDateString()+"</b><br>Days remaining: <b>"+d+"</b>";}
-function calcRunoff(){var A=+document.getElementById("dr_area").value||500,i=+document.getElementById("dr_intensity").value||50,c=+document.getElementById("dr_coeff").value||0.9;var Q=(A*i*c/3600).toFixed(2);var dia=Math.ceil(Math.sqrt(Q)*35);document.getElementById("dr_runoffResult").innerHTML="<b>Runoff: "+Q+" L/s</b> | Pipe Ø: ~"+dia+"mm | Area: "+A+"m²";}
-function calcPavement(){var cbr=+document.getElementById("tp_cbr").value||5,msa=+document.getElementById("tp_msa").value||10;var base=Math.max(150,400-Math.sqrt(cbr)*60),binder=Math.min(100,40+msa*3),surface=40;document.getElementById("tp_paveResult").innerHTML="Surface: "+surface+"mm | Binder: "+Math.round(binder)+"mm | Base: "+Math.round(base)+"mm | <b>Total: "+Math.round(surface+binder+base)+"mm</b>";}
-function calcCarbon(){var conc=+document.getElementById("ev_conc").value||0,steel=+document.getElementById("ev_steel").value||0;document.getElementById("ev_carbonResult").innerHTML="<b>Embodied Carbon: "+fmt(conc*350+steel*1850)+" kgCO₂e</b> | Concrete: "+fmt(conc*350)+"kg | Steel: "+fmt(steel*1850)+"kg";}
-function calcTempLoad(){var h=+document.getElementById("tw_height").value||3,q=+document.getElementById("tw_pressure").value||60;var P=h*q*1.5;document.getElementById("tw_loadResult").innerHTML="<b>Design Pressure: "+P.toFixed(1)+" kN/m²</b> | Height: "+h+"m | Concrete pressure: "+q+" kN/m²";}
-function calcBulkDensity(){var w=+document.getElementById("mt_weight").value||0,v=+document.getElementById("mt_volume").value||1;var d=w/v;document.getElementById("mt_densityResult").innerHTML="<b>Density: "+d.toFixed(0)+" kg/m³</b> | Weight: "+w+"kg | Volume: "+v+"m³";}
-function calcBuildUpRate(){var g=+document.getElementById("es_gang").value||2,h=+document.getElementById("es_hours").value||8,r=+document.getElementById("es_rate").value||35,o=+document.getElementById("es_output").value||10;var daily=g*h*r,unit=daily/o;document.getElementById("es_buildupResult").innerHTML="<b>Daily Cost: $"+fmt(daily)+"</b> | <b>Unit Rate: $"+unit.toFixed(2)+"/unit</b> | "+ (g*h/o).toFixed(2)+" hrs/unit";}
-function calcVE(){var orig=+document.getElementById("ve_orig").value||0,prop=+document.getElementById("ve_prop").value||0;var saving=orig-prop,pctSaving=orig>0?(saving/orig*100):0;document.getElementById("ve_result").innerHTML="<b>Saving: $"+fmt(saving)+" ("+pctSaving.toFixed(1)+"%)</b> | Original: $"+fmt(orig)+" | Proposed: $"+fmt(prop);}
-function calcLCC(){var cap=+document.getElementById("lc_capital").value||0,om=+document.getElementById("lc_om").value||0,life=+document.getElementById("lc_life").value||30,rate=(+document.getElementById("lc_rate").value||5)/100;var npvOM=0;for(var i=1;i<=life;i++)npvOM+=om/Math.pow(1+rate,i);document.getElementById("lc_lccResult").innerHTML="<b>Capital: $"+fmt(cap)+"</b> | <b>O&M NPV: $"+fmt(Math.round(npvOM))+"</b> | <b>Total LCC: $"+fmt(Math.round(cap+npvOM))+"</b> | Annual equiv: $"+fmt(Math.round((cap+npvOM)/life))+"/yr";}
-function calcLeadTime(){var d=+document.getElementById("pr_lead").value||14;var now=new Date(),arrive=new Date();arrive.setDate(now.getDate()+d);document.getElementById("pr_leadResult").innerHTML="<b>Order by: "+now.toLocaleDateString()+"</b><br>Expected arrival: <b>"+arrive.toLocaleDateString()+"</b><br>Lead time: <b>"+d+" days</b>";}
-function calcTenderScore(){var p=+document.getElementById("aw_price").value||0,q=+document.getElementById("aw_quality").value||0,t=+document.getElementById("aw_time").value||0;var total=p+q+t;document.getElementById("aw_tenderResult").innerHTML=total===100?"<b style=\"color:#34d399\">✓ Weights valid ("+total+"%)</b>":"<b style=\"color:#f87171\">✗ Weights = "+total+"% (need 100%)</b>";}
-function calcUtilization(){var used=+document.getElementById("pl_used").value||0,avail=+document.getElementById("pl_avail").value||8;var rate=avail>0?(used/avail*100):0;document.getElementById("pl_utilResult").innerHTML="<b>Utilization: "+rate.toFixed(0)+"%</b> | Used: "+used+"hrs | Available: "+avail+"hrs | "+(rate>80?"<span class=\"tag r\">HIGH</span>":"<span class=\"tag g\">OK</span>");}
-function calcAFR(){var incidents=+document.getElementById("hs_incidents").value||0,hours=+document.getElementById("hs_hours").value||100000;var afr=hours>0?(incidents*100000/hours):0;document.getElementById("hs_afrResult").innerHTML="<b>AFR: "+afr.toFixed(1)+"</b> per 100,000 hrs | Incidents: "+incidents+" | Hours: "+fmt(hours);}
-function calcWarranty(){var d=document.getElementById("ab_warranty").value;var now=new Date(),exp=new Date(d);var daysLeft=Math.ceil((exp-now)/(86400000));document.getElementById("ab_warrantyResult").innerHTML=daysLeft>0?"<b>"+daysLeft+" days remaining</b> | Expires: "+exp.toLocaleDateString():"<b style=\"color:#f87171\">EXPIRED</b> | Expired: "+exp.toLocaleDateString();}
-function calcClaimEntitlement(){var delay=+document.getElementById("cl_delay").value||0,cost=+document.getElementById("cl_cost").value||0;var eot=Math.ceil(delay/7)*7;document.getElementById("cl_entitleResult").innerHTML="<b>EOT: "+eot+" days ("+Math.ceil(eot/7)+" weeks)</b> | <b>Cost: $"+fmt(cost)+"</b> | "+(delay>0?"<span class=\"tag y\">Entitlement likely</span>":"<span class=\"tag g\">No delay</span>");}
-
 function render(){
   var p=getPath();
   var h='';
