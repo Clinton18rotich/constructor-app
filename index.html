@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<link rel="icon" type="image/svg+xml" href="icon.svg">
 <title>Constructor Super App Pro</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -93,8 +92,8 @@ if('serviceWorker' in navigator){
 
 // ===================== DATA STORE =====================
 var appData=JSON.parse(localStorage.getItem('constructorData')||'{}');
-var defaults={surveys:[],soilTests:[],gisLayers:[],finances:[],contracts:[],approvals:[],designBeams:[],designColumns:[],designSlabs:[],designFoundations:[],archNotes:[],waterPipes:[],drainPipes:[],electricalCircuits:[],transportSections:[],envAssessments:[],tempWorks:[],cadFiles:[],measurements:[],materials:[],boqItems:[],estimates:[],valueItems:[],lifecycleItems:[],purchaseOrders:[],awardedContracts:[],suppliers:[],plantItems:[],crewMembers:[],dailyLogs:[],programmeTasks:[],buildingTasks:[],pilingRecords:[],concreteMixes:[],labTests:[],safetyIncidents:[],ncrRecords:[],documents:[],siteDeliveries:[],communications:[],snags:[],asBuiltDocs:[],claimsItems:[],notifications:[],photos:{}};
-Object.keys(defaults).forEach(function(k){if(!appData[k])appData[k]=defaults[k];if(!appData.concrete)appData.concrete=[];});
+var defaults={surveys:[],soilTests:[],gisLayers:[],finances:[],contracts:[],approvals:[],designBeams:[],designColumns:[],designSlabs:[],designFoundations:[],archNotes:[],waterPipes:[],drainPipes:[],electricalCircuits:[],transportSections:[],envAssessments:[],tempWorks:[],cadFiles:[],measurements:[],materials:[],boqItems:[],estimates:[],valueItems:[],lifecycleItems:[],purchaseOrders:[],awardedContracts:[],suppliers:[],plantItems:[],crewMembers:[],dailyLogs:[],programmeTasks:[],buildingTasks:[],pilingRecords:[],labTests:[],safetyIncidents:[],ncrRecords:[],documents:[],siteDeliveries:[],communications:[],snags:[],asBuiltDocs:[],claimsItems:[],notifications:[],photos:{}};
+Object.keys(defaults).forEach(function(k){if(!appData[k])appData[k]=defaults[k];});
 if(!appData.settings)appData.settings={role:'PM',darkMode:true,notifications:true};
 function save(){localStorage.setItem('constructorData',JSON.stringify(appData));render();updateBadge();}
 
@@ -154,8 +153,7 @@ window.addEventListener('offline',function(){document.getElementById('offlineBar
 function exportPDF(title,content){
   try{
     var win=window.open('','_blank','width=800,height=600');
-    win.document.write('<html><head><link rel="icon" type="image/svg+xml" href="icon.svg">
-<title>'+title+'</title><style>body{font-family:sans-serif;padding:20px;color:#111}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ddd;padding:8px;text-align:left}th{background:#f3f4f6}h1{font-size:18px}h2{font-size:14px}</style></head><body>'+content+'</body></html>');
+    win.document.write('<html><head><title>'+title+'</title><style>body{font-family:sans-serif;padding:20px;color:#111}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ddd;padding:8px;text-align:left}th{background:#f3f4f6}h1{font-size:18px}h2{font-size:14px}</style></head><body>'+content+'</body></html>');
     win.document.close();
     setTimeout(function(){win.print();},500);
   }catch(e){
@@ -181,7 +179,7 @@ var phases=[
   {name:'B. Design',items:[{id:'structures',emoji:'🏗️',title:'Structures (EC/BS)'},{id:'architectural',emoji:'🏛️',title:'Architectural'},{id:'water',emoji:'💧',title:'Water Supply'},{id:'drainage',emoji:'🚿',title:'Drainage'},{id:'electrical',emoji:'⚡',title:'Electrical'},{id:'transport',emoji:'🛣️',title:'Transport & Highway'},{id:'environmental',emoji:'🌱',title:'Environmental'},{id:'tempworks',emoji:'🏗️',title:'Temporary Works'},{id:'cad',emoji:'🎨',title:'CAD/BIM'}]},
   {name:'C. Measurement & Costing',items:[{id:'measurements',emoji:'📏',title:'Measurements'},{id:'materials',emoji:'🧱',title:'Materials'},{id:'quantity',emoji:'📊',title:'Quantity Survey'},{id:'estimating',emoji:'💰',title:'Estimating'},{id:'value',emoji:'💡',title:'Value Engineering'},{id:'lifecycle',emoji:'📈',title:'Life Cycle Costing'}]},
   {name:'D. Procurement',items:[{id:'procurement',emoji:'🏪',title:'Procurement'},{id:'award',emoji:'📜',title:'Contract Award'},{id:'suppliers',emoji:'🤝',title:'Suppliers'},{id:'plant',emoji:'🚜',title:'Plant & Equipment'},{id:'hr',emoji:'👷',title:'HR & Crew'}]},
-  {name:'E. Construction',items:[{id:'construction',emoji:'📋',title:'Construction Mgt'},{id:'programme',emoji:'📅',title:'Programme'},{id:'building',emoji:'🧱',title:'Building Works'},{id:'substructure',emoji:'🔩',title:'Substructure'},{id:'lab',emoji:'🧪',title:'Materials Lab'},{id:'concrete',emoji:'🧱',title:'Concrete Tech'},{id:'safety',emoji:'⛑️',title:'Health & Safety'},{id:'quality',emoji:'✅',title:'Quality'},{id:'docs',emoji:'📄',title:'Doc Control'},{id:'logistics',emoji:'🚧',title:'Logistics'},{id:'stakeholder',emoji:'👥',title:'Stakeholder'}]},
+  {name:'E. Construction',items:[{id:'construction',emoji:'📋',title:'Construction Mgt'},{id:'programme',emoji:'📅',title:'Programme'},{id:'building',emoji:'🧱',title:'Building Works'},{id:'substructure',emoji:'🔩',title:'Substructure'},{id:'lab',emoji:'🧪',title:'Materials Lab'},{id:'safety',emoji:'⛑️',title:'Health & Safety'},{id:'quality',emoji:'✅',title:'Quality'},{id:'docs',emoji:'📄',title:'Doc Control'},{id:'logistics',emoji:'🚧',title:'Logistics'},{id:'stakeholder',emoji:'👥',title:'Stakeholder'}]},
   {name:'F. Close-Out',items:[{id:'snagging',emoji:'🔍',title:'Snagging & Defects'},{id:'asbuilt',emoji:'📦',title:'As-Built & Digital Twin'},{id:'reports',emoji:'📈',title:'Reports & Analytics'},{id:'claims',emoji:'⚖️',title:'Claims & Disputes'}]}
 ];
 
@@ -271,8 +269,6 @@ moduleDefs.construction={title:'Construction Management',emoji:'📋',phase:'Con
 moduleDefs.programme={title:'Programme & Schedule',emoji:'📅',phase:'Construction',fields:[{id:'name',label:'Task Name'},{id:'start',label:'Start Date',inputType:'date'},{id:'end',label:'End Date',inputType:'date'},{id:'duration',label:'Duration (days)',inputType:'number'},{id:'priority',label:'Priority',type:'select',options:['Normal','High','Critical']},{id:'depends',label:'Depends On'}]};
 moduleDefs.building={title:'Building Construction',emoji:'🧱',phase:'Construction',fields:[{id:'name',label:'Activity Name'},{id:'trade',label:'Trade',type:'select',options:['Blockwork','Concrete','Steel','Timber','Roofing','Cladding','Plastering']},{id:'floor',label:'Floor Level',type:'select',options:['Ground','1st','2nd','Roof','External']},{id:'qty',label:'Quantity',inputType:'number'},{id:'unit',label:'Unit'}]};
 moduleDefs.substructure={title:'Substructure & Piling',emoji:'🔩',phase:'Construction',fields:[{id:'ref',label:'Pile Reference'},{id:'type',label:'Type',type:'select',options:['Bored','Driven','CFA','Sheet','Mini-pile']},{id:'dia',label:'Diameter (mm)',inputType:'number'},{id:'desLen',label:'Design Length (m)',inputType:'number'},{id:'achLen',label:'Achieved Length (m)',inputType:'number'},{id:'conc',label:'Concrete (m³)',inputType:'number'}]};
-moduleDefs.concrete={title:"Concrete Technology",emoji:"🧱",phase:"Construction",fields:[{id:"mixName",label:"Mix Name (e.g., C30)"},{id:"cement",label:"Cement (kg/m³)",inputType:"number"},{id:"water",label:"Water (L/m³)",inputType:"number"},{id:"fineAgg",label:"Fine Agg (kg/m³)",inputType:"number"},{id:"coarseAgg",label:"Coarse Agg (kg/m³)",inputType:"number"},{id:"wcRatio",label:"W/C Ratio",inputType:"number",step:"0.01"},{id:"slump",label:"Slump (mm)",inputType:"number"},{id:"strength",label:"28-day Strength (MPa)",inputType:"number"},{id:"admixture",label:"Admixture",type:"select",options:["None","Plasticizer","Superplasticizer","Retarder","Accelerator","Air Entrainer","Silica Fume"]}]};
-
 moduleDefs.lab={title:'Materials Testing Lab',emoji:'🧪',phase:'Construction',fields:[{id:'ref',label:'Sample Reference'},{id:'type',label:'Test Type',type:'select',options:['Cube (7-day)','Cube (28-day)','Slump','Compaction','Rebend','Gradation']},{id:'location',label:'Location'},{id:'value',label:'Test Result'},{id:'required',label:'Required Value'},{id:'result',label:'Outcome',type:'select',options:['Pass','Fail','Pending']}]};
 moduleDefs.safety={title:'Health, Safety & Welfare',emoji:'⛑️',phase:'Construction',fields:[{id:'desc',label:'Incident Description'},{id:'type',label:'Type',type:'select',options:['Near Miss','Minor Injury','Lost Time Injury','Property Damage','Environmental']},{id:'severity',label:'Severity',type:'select',options:['Low','Medium','High','Critical']},{id:'action',label:'Action Taken'}]};
 moduleDefs.quality={title:'Quality Management',emoji:'✅',phase:'Construction',fields:[{id:'ref',label:'NCR Reference'},{id:'desc',label:'Non-conformance',type:'textarea'},{id:'location',label:'Location'},{id:'severity',label:'Severity',type:'select',options:['Minor','Major','Critical']},{id:'action',label:'Corrective Action'},{id:'status',label:'Status',type:'select',options:['Open','In Progress','Closed']}]};
@@ -353,34 +349,6 @@ function exportModulePDF(id,title){
 }
 
 // ===================== RENDER =====================
-
-pages.concrete=function(){
-  var mixes=appData.concrete||[];
-  var h="<h1>🧱 Concrete Technology</h1><p class=\"sub\">Construction Phase · Mix design, properties, standards</p>";
-  h+="<div class=\"gr2\"><div class=\"cd\" style=\"text-align:center\"><h2 style=\"color:#60a5fa\">"+mixes.length+"</h2><p style=\"font-size:10px;color:#9ca3af\">Mix Designs</p></div><div class=\"cd\" style=\"text-align:center\"><h2 style=\"color:#34d399\">"+fmt(mixes.reduce(function(s,m){return s+(+m.cement||0)+(+m.fineAgg||0)+(+m.coarseAgg||0)},0))+" kg</h2><p style=\"font-size:10px;color:#9ca3af\">Total Materials</p></div></div>";
-  h+="<div class=\"cd\"><h4>🔬 Mix Design Calculator (DOE Method)</h4><div class=\"row\"><div class=\"col\"><label class=\"lbl\">Target Strength (N/mm²)</label><input class=\"inp\" id=\"mx_strength\" type=\"number\" value=\"30\"></div><div class=\"col\"><label class=\"lbl\">Slump (mm)</label><input class=\"inp\" id=\"mx_slump\" type=\"number\" value=\"75\"></div></div><div class=\"row\"><div class=\"col\"><label class=\"lbl\">Max Aggregate (mm)</label><input class=\"inp\" id=\"mx_agg\" type=\"number\" value=\"20\"></div><div class=\"col\"><label class=\"lbl\">Cement Type</label><select class=\"sel\" id=\"mx_cement\"><option>OPC (CEM I)</option><option>Fly Ash (CEM II)</option><option>GGBS (CEM III)</option></select></div></div><button class=\"bt2\" style=\"background:#f59e0b;color:#111827\" onclick=\"designConcreteMix()\">Calculate Mix Proportions</button><div id=\"mixDesignResult\" style=\"margin-top:8px;padding:10px;background:#111827;border-radius:8px;font-size:13px;color:#34d399\">Enter parameters to calculate mix design</div></div>";
-  h+="<div class=\"cd\"><h4>💧 W/C Ratio Reference</h4><table><tr><th>W/C Ratio</th><th>28-day Strength</th><th>Application</th></tr><tr><td>0.35</td><td>60 MPa</td><td>Prestressed</td></tr><tr><td>0.40</td><td>50 MPa</td><td>Bridges</td></tr><tr><td>0.45</td><td>42 MPa</td><td>Columns</td></tr><tr><td>0.50</td><td>35 MPa</td><td>General RC</td></tr><tr><td>0.55</td><td>28 MPa</td><td>Foundations</td></tr><tr><td>0.65</td><td>17 MPa</td><td>Lean fill</td></tr></table></div>";
-  h+="<div class=\"cd\"><h4>🌦️ Exposure Classes (BS 8500)</h4><table><tr><th>Class</th><th>Min Grade</th><th>Max W/C</th><th>Cover</th></tr><tr><td>XC1 (Dry)</td><td>C20/25</td><td>0.65</td><td>15mm</td></tr><tr><td>XC3/4 (Cyclic)</td><td>C30/37</td><td>0.55</td><td>30mm</td></tr><tr><td>XD1 (Chlorides)</td><td>C35/45</td><td>0.50</td><td>35mm</td></tr><tr><td>XS3 (Tidal)</td><td>C40/50</td><td>0.45</td><td>50mm</td></tr></table></div>";
-  h+="<div class=\"cd\"><h4>🧪 Admixtures Guide</h4><table><tr><th>Type</th><th>Dosage</th><th>Effect</th></tr><tr><td>Plasticizer</td><td>0.2-0.5%</td><td>Reduce water 5-12%</td></tr><tr><td>Superplasticizer</td><td>0.5-2%</td><td>Reduce water 12-30%</td></tr><tr><td>Retarder</td><td>0.2-0.5%</td><td>Delay set 2-6hrs</td></tr><tr><td>Accelerator</td><td>1-2%</td><td>Early strength</td></tr><tr><td>Air Entrainer</td><td>0.05-0.2%</td><td>4-7% air content</td></tr><tr><td>Silica Fume</td><td>5-10%</td><td>High strength</td></tr></table></div>";
-  h+="<div class=\"cd\"><h4>+ Save Mix Design</h4><form onsubmit=\"submitForm(event,\'concrete\')\"><input class=\"inp\" id=\"concrete_mixName\" placeholder=\"Mix Name\" required><div class=\"row\"><input class=\"inp2\" id=\"concrete_cement\" placeholder=\"Cement (kg/m³)\" type=\"number\"><input class=\"inp2\" id=\"concrete_water\" placeholder=\"Water (L/m³)\" type=\"number\"></div><div class=\"row\"><input class=\"inp2\" id=\"concrete_fineAgg\" placeholder=\"Fine Agg (kg/m³)\" type=\"number\"><input class=\"inp2\" id=\"concrete_coarseAgg\" placeholder=\"Coarse Agg (kg/m³)\" type=\"number\"></div><div class=\"row\"><input class=\"inp2\" id=\"concrete_wcRatio\" placeholder=\"W/C Ratio\" type=\"number\" step=\"0.01\"><input class=\"inp2\" id=\"concrete_slump\" placeholder=\"Slump (mm)\" type=\"number\"></div><input class=\"inp\" id=\"concrete_strength\" placeholder=\"28-day Strength (MPa)\" type=\"number\"><select class=\"sel\" id=\"concrete_admixture\"><option>None</option><option>Plasticizer</option><option>Superplasticizer</option><option>Retarder</option><option>Accelerator</option><option>Air Entrainer</option><option>Silica Fume</option></select><button class=\"bt2\" style=\"background:#2563eb;color:white\">+ Save Mix</button></form></div>";
-  if(mixes.length){h+="<div class=\"cd\"><h4>📋 Saved Mixes</h4><table><tr><th>Name</th><th>Cement</th><th>Water</th><th>FA</th><th>CA</th><th>W/C</th><th>MPa</th></tr>";mixes.forEach(function(m){h+="<tr><td><b>"+m.mixName+"</b></td><td>"+m.cement+"</td><td>"+m.water+"</td><td>"+m.fineAgg+"</td><td>"+m.coarseAgg+"</td><td>"+m.wcRatio+"</td><td>"+m.strength+"</td></tr>";});h+="</table></div>";}
-  return h;
-};
-
-function designConcreteMix(){
-  var fc=+document.getElementById("mx_strength").value||30;
-  var slump=+document.getElementById("mx_slump").value||75;
-  var agg=+document.getElementById("mx_agg").value||20;
-  var wc=fc>=50?0.38:fc>=40?0.45:fc>=30?0.50:fc>=25?0.55:0.65;
-  var water=agg===10?208:agg===20?195:180;
-  if(slump>100)water+=15;if(slump<50)water-=15;
-  var cement=Math.round(water/wc);
-  var totalAgg=2200-cement-water;
-  var faPct=agg===10?55:agg===20?45:35;
-  var fa=Math.round(totalAgg*faPct/100);
-  var ca=totalAgg-fa;
-  document.getElementById("mixDesignResult").innerHTML="W/C: <b>"+wc.toFixed(2)+"</b> | Cement: <b>"+cement+" kg/m³</b> | Water: <b>"+water+" L</b> | FA: <b>"+fa+" kg</b> | CA: <b>"+ca+" kg</b><br><span style=\"font-size:11px;color:#9ca3af\">Ratio ~ 1:"+(fa/cement).toFixed(1)+":"+(ca/cement).toFixed(1)+" | Target: C"+fc+"/"+(fc+8)+"</span>";
-}
 function render(){
   var p=getPath();
   var h='';
